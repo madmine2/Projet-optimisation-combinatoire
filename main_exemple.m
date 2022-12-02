@@ -5,19 +5,17 @@ file = dlmread(fileName);
 N = file(1:1);
 cost_ring = file(2:1+N,:);
 cost_star = file(2+N:1+2*N,:);
-N=8
-listering = [1,2,3,4];
-listestar = [0 0 0 0 1 0 0 0;0 0 0 0 0 1 0 0;0 0 0 0 0 0 1 0;0 0 0 0 0 0 0 1];# matrice N*N  
+# matrice N*N  
 
 # Algo --------------------------
-
+[listering,listestar,star]=Ini_min_somme(cost_ring,cost_star);
 
 
 
 
 
 # Calcul du Cost ----------------
-cout_total = cout (cost_ring,cost_star,listering,listestar)
+cout_total = cout (cost_ring,cost_star,listering,listestar);
 # Output ------------------------
 
 
