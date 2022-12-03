@@ -10,7 +10,7 @@ cost_star = file(2+N:1+2*N,:);
 # Algo --------------------------
 [listering,listestar,star]=Ini_min_somme(cost_ring,cost_star);
 
-
+[listering,listestar,star]=Voisinage_variable(cost_ring,cost_star,listering,listestar,star);
 
 
 
