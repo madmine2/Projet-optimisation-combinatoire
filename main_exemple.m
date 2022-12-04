@@ -12,7 +12,7 @@ cost_star = file(2+N:1+2*N,:);
 
 [listering,listestar,star]=Voisinage_variable(cost_ring,cost_star,listering,listestar,star);
 
-
+Verif(listering,listestar,star)
 
 # Calcul du Cost ----------------
 cout_total = cout (cost_ring,cost_star,listering,listestar);

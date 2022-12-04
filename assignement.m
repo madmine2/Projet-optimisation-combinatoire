@@ -5,7 +5,7 @@ function  listestar = assignement (star,cost_star,listering)
   listestar=zeros(N,N);
   for i=star
     [minval, idx]=min(cost_star(i,listering)) ;
-    listestar(i,idx)=1;
+    listestar(i,listering(idx))=1;
   endfor
   
 

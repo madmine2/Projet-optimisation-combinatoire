@@ -12,7 +12,7 @@ function cout_total = cout(cost_ring,cost_star,listering,listestar)
    
   # cout des stars 
   for i= 1:N
-    for j=1:N
+    for j=listering
       if listestar(i,j)==1 
         cout_star+=cost_star(j,i) ;
       endif

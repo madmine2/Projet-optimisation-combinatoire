@@ -1,19 +1,9 @@
-# fonction qui permute deux éléments du rings aléatoirement 
+# fonction qui permute deux éléments du rings 
 
-function  [listering]=V1_permut(listering )
-  N=length(listering);
-  num=randi(N);
-  if num==N
-    temp=listering(num);
-    listering(num)=listering(1);
-    listering(1)=temp;
-    
-  else
-    temp=listering(num);
-    listering(num)=listering(num+1);
-    listering(num+1)=temp;
-    
-  endif
+function  [listering]=V1_permut(listering,num1,num2 )
   
-
+    temp=listering(num1);
+    listering(num1)=listering(num2);
+    listering(num2)=temp;
+  
 endfunction
