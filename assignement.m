@@ -1,11 +1,11 @@
 # fonction qui assigne les éléments stars au éléments de ring en minimisant le cout 
-function  listestar = assignement (star,cost_star,listering)
+function  star_matrice = assignement (star,cost_star,ring )
   N=length(cost_star);
   
-  listestar=zeros(N,N);
+  star_matrice=zeros(N,N);
   for i=star
-    [minval, idx]=min(cost_star(i,listering)) ;
-    listestar(i,listering(idx))=1;
+    [minval, idx]=min(cost_star(i,ring )) ;
+    star_matrice(i,ring (idx))=1;
   endfor
   
 

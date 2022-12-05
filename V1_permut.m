@@ -1,9 +1,9 @@
 # fonction qui permute deux éléments du rings 
 
-function  [listering]=V1_permut(listering,num1,num2 )
+function  [ring ]=V1_permut(ring ,num1,num2 )
   
-    temp=listering(num1);
-    listering(num1)=listering(num2);
-    listering(num2)=temp;
+    temp=ring (num1);
+    ring (num1)=ring (num2);
+    ring (num2)=temp;
   
 endfunction

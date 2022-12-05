@@ -1,14 +1,14 @@
 
 
-function [best_ring,best_star_mat,best_star]=Voisinage_variable(cost_ring,cost_star,listering,listestar,star)
+function [best_ring,best_star_mat,best_star]=Voisinage_variable(cost_ring,cost_star,ring ,star_matrice,star)
   % initialisation 
   tic;
-  best_ring=listering;
-  best_local_ring=listering;
+  best_ring=ring ;
+  best_local_ring=ring ;
   best_star=star;
   best_local_star=star;
-  best_star_mat=listestar;
-  best_local_star_mat=listestar;
+  best_star_mat=star_matrice;
+  best_local_star_mat=star_matrice;
   best_valeur=cout(cost_ring,cost_star,best_ring,best_star_mat);
   best_local_valeur=best_valeur;
   t=0;
@@ -20,25 +20,25 @@ function [best_ring,best_star_mat,best_star]=Voisinage_variable(cost_ring,cost_s
     %diversification  
    
      
-      [listering,listestar,star]=Ajout(cost_ring,cost_star,best_local_ring,best_local_star_mat,best_local_star);
+      [ring ,star_matrice,star]=Ajout(cost_ring,cost_star,best_local_ring,best_local_star_mat,best_local_star);
       
      elseif mod(k,4)==2 
-       [listering,listestar,star]=Echange(cost_ring,cost_star,best_local_ring,best_local_star_mat,best_local_star);
+       [ring ,star_matrice,star]=Echange(cost_ring,cost_star,best_local_ring,best_local_star_mat,best_local_star);
      else
-        [listering,listestar,star]=Supression(cost_ring,cost_star,best_local_ring,best_local_star_mat,best_local_star);
+        [ring ,star_matrice,star]=Supression(cost_ring,cost_star,best_local_ring,best_local_star_mat,best_local_star);
      endif
  
       % recherche locale parmis les permutations du ring 
-      for i=1:length(listering)
-        for j=1:length(listering)
+      for i=1:length(ring )
+        for j=1:length(ring )
           if j!=i
-            [new_listering]=V1_permut(listering,i,j);
+            [new_ring ]=V1_permut(ring ,i,j);
              % mise à jour 
-             value=cout(cost_ring,cost_star,new_listering,listestar);
+             value=cout(cost_ring,cost_star,new_ring ,star_matrice);
              if value<best_local_valeur
-               best_local_ring=new_listering;
+               best_local_ring=new_ring ;
                best_local_star=star;
-               best_local_star_mat=listestar;
+               best_local_star_mat=star_matrice;
                best_local_valeur=value;
              endif
            endif
