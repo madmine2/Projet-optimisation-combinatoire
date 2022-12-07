@@ -6,21 +6,22 @@
   N = file(1:1);
   cost_ring = file(2:1+N,:);
   cost_star = file(2+N:1+2*N,:);
-  
+
 
 
 # Solution initiale  --------------------------
 
-  % initialisation aléatoire  
-  
+  % initialisation alï¿½atoire
+
   [ring ,star_matrice,star]=Ini_min_somme(cost_ring,cost_star);
 
 
 # Algorithme --------------------------
- 
-  [ring ,star_matrice,star]=Voisinage_variable(cost_ring,cost_star,ring ,star_matrice,star);
- 
-# Vérification de la solution  --------------------------
+
+  %[ring ,star_matrice,star]=Voisinage_variable(cost_ring,cost_star,ring ,star_matrice,star);
+  [ring ,star_matrice,star]=recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, 10);
+  %MARCHE PAS
+# Vï¿½rification de la solution  --------------------------
 
   Verif(ring ,star_matrice,star)
 
@@ -30,7 +31,7 @@
 
 # Output ------------------------
 
-  # faire la transition 
+  # faire la transition
 
   ##dlmwrite(['output/out',fileName],["RING ",mat2str(length(Listering))],delim="");
   ##dlmwrite(['output/out',fileName],Listering,delim=" ", "-append");
