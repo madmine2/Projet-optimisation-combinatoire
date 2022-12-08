@@ -40,7 +40,7 @@ function [best_ring,best_star_mat,best_star]=fourmis(cost_ring,cost_star,ring ,s
     # Pour chaque fourmi
     for fourmi = 1 : nombreFourmis  
        matriceTrajetsInRing = zeros(nombreLieu);          # Les trajets que fait cette fourmi
-       ringMelangePourTirageRandom = randperm(ring)      # ordre dans lequel on traite les villes (random)
+       ringMelangePourTirageRandom = randperm(nombreLieu); # ordre dans lequel on traite les villes (random)
        coutTrajetFourmi = 0;                              # cout du trajet de cette fourmi
          
          # Pour chaque ville (on les prends dans un ordre aléatoire) on va choisir une autre ville pour faire le trajet en fonction des pheromone

@@ -5,8 +5,8 @@
    ville = 1;
    step = 1;
    while (true)
-     if sum(matriceTrajetsInRing(ville,:) == 0  # Si il n'y a plus de chemin à partir de la ville où on est c'est qu'on a fait le tour
-        break
+     if sum(matriceTrajetsInRing(ville,:)) == 0  # Si il n'y a plus de chemin à partir de la ville où on est c'est qu'on a fait le tour
+      break;
      endif
      for i = 1 : nombreLieu
         if matriceTrajetsInRing(ville,i) == 1 :

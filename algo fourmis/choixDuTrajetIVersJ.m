@@ -25,7 +25,7 @@ endfor
   # et on prend le chemin dont la probabilite a fait basculer la balance.
   #ça fait surtout une difference au debut quand les probabilite sont relativement egale, apres plusieurs iterations il va prendre le chemin ayant la plus grande probabilite 
   
-  nSeuilProbabilitePourChoixDuChemin = rand(0,1);
+  nSeuilProbabilitePourChoixDuChemin = rand();
   sommeProbaDesTrajetIVersJ = 0;
   
   # calcul des probabilités ----------------------------------------------
