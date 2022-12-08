@@ -1,4 +1,18 @@
  function [trajetFourmiEnListe] = reconstitutionTrajetFourmi(matriceTrajetsInRing,nombreLieu)
+   # verif de la matriceTrajetsInRing ----------
+   for i = 1 : nombreLieu
+     if sum(matriceTrajetsInRing(i,:)) != 2
+      disp("pas bon")
+      matriceTrajetsInRing(i,:)
+     endif
+   endfor
+   for i = 1 : nombreLieu
+   if sum(matriceTrajetsInRing(:,i)) != 2
+    disp("pas bon")
+    matriceTrajetsInRing(:,i)
+   endif
+ endfor
+   matriceTrajetsInRing
    coutTrajetFourmi = 0;
    trajetFourmiEnListe = zeros(1,nombreLieu);
    # Pour la ville 1, on cherche un trajet, quand il est trouve on le suit jusqu'à revenir à la ville 1
@@ -9,7 +23,7 @@
       break;
      endif
      for i = 1 : nombreLieu
-        if matriceTrajetsInRing(ville,i) == 1 :
+        if matriceTrajetsInRing(ville,i) == 1
            trajetFourmiEnListe(step) = ville;
            matriceTrajetsInRing(ville,i) = 0;
            matriceTrajetsInRing(i , ville) = 0;

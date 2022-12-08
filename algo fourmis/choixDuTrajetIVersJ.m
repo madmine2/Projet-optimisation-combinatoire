@@ -1,18 +1,14 @@
-function [matriceTrajetsInRing,coutTrajetFourmi] = choixDuTrajetIVersJ(villeI, matriceTrajetsInRing,nombreLieu, matricePheromone,matriceDeltaPheromone,cost_ring, alpha, beta,coutTrajetFourmi)
+function [villeActuelle,listeTrajetFourmi,coutTrajetFourmi,listeVilleEncoreDisponibles] = choixDuTrajetIVersJ(ring,villeActuelle, listeTrajetFourmi,nombreLieu, matricePheromone,matriceDeltaPheromone,cost_ring, alpha, beta,coutTrajetFourmi,listeVilleEncoreDisponibles)
   pkg load statistics;
   #préparations-------------------------------------------------------------
   listeProbaDuTrajetIVersJ = zeros(1,nombreLieu);
   poidsTrajetTotal = 0;
   for l = 1 : nombreLieu 
-    if l == villeI                                                     # si trajet vers lui-même alors 0
-      listeProbaDuTrajetIVersJ(l) = 0;
-    elseif sum(matriceTrajetsInRing(:,l)) > 1                          # chaque 1 représente un trajet vers une autre ville, Chaque ville ne peut avoir que 2 trajet (1 entrant, 1 sortant)
-        listeProbaDuTrajetIVersJ(l) = 0;
-    else    
-    tau = matricePheromone(villeI,l) + matriceDeltaPheromone(villeI,l);# tau(i)(l) represente la quantite de pheromone sur le chemin entre la ville i et la ville l. C'est la pseudo-memoire du systeme. Delta represente les pheromone ajoute par les fourmis precedentes du même tour, c'est separer pour distinguer durant le processus d'evaluation
-    distanceIJ = cost_ring(villeI, l);
+    if any(listeVilleEncoreDisponibles == ring(l)) == 1                      # si trajet vers lui-même alors 0  
+    tau = matricePheromone(villeActuelle,l) + matriceDeltaPheromone(villeActuelle,l);# tau(i)(l) represente la quantite de pheromone sur le chemin entre la ville i et la ville l. C'est la pseudo-memoire du systeme. Delta represente les pheromone ajoute par les fourmis precedentes du même tour, c'est separer pour distinguer durant le processus d'evaluation
+    distanceIJ = cost_ring(ring(villeActuelle), ring(l));
     eta = 1 /distanceIJ ;                                              # eta (i)(l) represente l'inverse de la distance entre la ville i et la ville l. C'est la visibilite du systeme   
-      poidsTrajetTotal += (tau ^ alpha) * (eta ^ beta);                # on ajoute le poid du trajet i vers l
+    poidsTrajetTotal += (tau ^ alpha) * (eta ^ beta);                  # on ajoute le poid du trajet i vers l
   endif
 endfor
   # apparte sur la selection du chemin -----------------------------------
@@ -25,29 +21,26 @@ endfor
   # et on prend le chemin dont la probabilite a fait basculer la balance.
   #ça fait surtout une difference au debut quand les probabilite sont relativement egale, apres plusieurs iterations il va prendre le chemin ayant la plus grande probabilite 
   
-  nSeuilProbabilitePourChoixDuChemin = rand();
+  nSeuilProbabilitePourChoixDuChemin = rand()
   sommeProbaDesTrajetIVersJ = 0;
   
   # calcul des probabilités ----------------------------------------------
   for j = 1 : nombreLieu
-    if j == villeI                                                      # si trajet vers lui-même alors 0
-      listeProbaDuTrajetIVersJ(j) = 0;
-    elseif sum(matriceTrajetsInRing(:,j)) > 1                           # chaque 1 représente un trajet vers une autre ville, Chaque ville ne peut avoir que 2 trajet (1 entrant, 1 sortant)
-        listeProbaDuTrajetIVersJ(j) = 0;
-    else                                                                # sinon calcul de la probabilite de prendre ce chemin
-      tau = matricePheromone(villeI,j) + matriceDeltaPheromone(villeI,l);# tau(i)(j) represente la quantite de pheromone sur le chemin entre la ville i et la ville j. C'est la pseudo-memoire du systeme. Delta represente les pheromone ajoute par les fourmis precedentes du même tour, c'est separer pour distinguer durant le processus d'evaluation
-      distanceIJ = cost_ring(villeI, j);
+    if any(listeVilleEncoreDisponibles == ring(j)) == 1                         # si trajet vers lui-même alors 0                                                              # sinon calcul de la probabilite de prendre ce chemin
+      j
+      tau = matricePheromone(villeActuelle,j) + matriceDeltaPheromone(villeActuelle,j);# tau(i)(j) represente la quantite de pheromone sur le chemin entre la ville i et la ville j. C'est la pseudo-memoire du systeme. Delta represente les pheromone ajoute par les fourmis precedentes du même tour, c'est separer pour distinguer durant le processus d'evaluation
+      distanceIJ = cost_ring(ring(villeActuelle), ring(j))
       eta = 1 /distanceIJ ;                                               # eta (i)(j) represente l'inverse de la distance entre la ville i et la ville j. C'est la visibilite du systeme.   
-      poidsTrajetActuel = (tau ^ alpha) * (eta ^ beta);                 # le poid du trajet i vers j 
-      listeProbaDuTrajetIVersJ(j) =poidsTrajetActuel / poidsTrajetTotal; # rapport du poids du trajet actuel sur le poids total (comme ça la somme des probabilités des trajets de i vers tous les j vaut 1) (=normalisation)    
+      poidsTrajetActuel = (tau ^ alpha) * (eta ^ beta);                   # le poid du trajet i vers j 
+      listeProbaDuTrajetIVersJ(j) =poidsTrajetActuel / poidsTrajetTotal;  # rapport du poids du trajet actuel sur le poids total (comme ça la somme des probabilités des trajets de i vers tous les j vaut 1) (=normalisation)    
     endif 
-    sommeProbaDesTrajetIVersJ +=   listeProbaDuTrajetIVersJ(j);
+    sommeProbaDesTrajetIVersJ +=   listeProbaDuTrajetIVersJ(j)
     
     # tirage de la route en fonction des probabilite calcule ---------------
     if sommeProbaDesTrajetIVersJ >= nSeuilProbabilitePourChoixDuChemin
-      matriceTrajetsInRing(villeI,j) = 1;
-      matriceTrajetsInRing(j,villeI) = 1;
-      coutTrajetFourmi += cost_ring(villeI, j);
+      listeTrajetFourmi = [listeTrajetFourmi j]
+      coutTrajetFourmi += cost_ring(ring(villeActuelle), ring(j));
+      villeActuelle = j;
       break                                                             #si la route est tire alors on break
     endif
   endfor
