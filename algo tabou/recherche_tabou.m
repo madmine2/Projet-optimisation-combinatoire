@@ -34,9 +34,9 @@ function [best_ring,best_star_mat,best_star] = recherche_tabou(cost_ring,cost_st
 
     if is_tabou == false
       % calcule du cout du nouveau voisinage
-      cout = cout(cost_ring,cost_star,ring,star_matrice);
-      if cout < best_valeur % update des variables si ameliorations du cout
-        best_valeur = cout;
+      val = cout(cost_ring,cost_star,ring,star_matrice);
+      if val < best_valeur % update des variables si ameliorations du cout
+        best_valeur = val;
         best_ring = ring;
         best_star = star;
         best_star_mat = star_matrice;
@@ -59,5 +59,6 @@ function [best_ring,best_star_mat,best_star] = recherche_tabou(cost_ring,cost_st
       endfor
     endif
     k = k + 1;
+    best_valeur
   endwhile
 endfunction
