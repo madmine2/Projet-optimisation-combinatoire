@@ -1,5 +1,10 @@
 # Ajoute les fonctions à l'interieur du dossier fourni aux fonctions connus
 addpath("algo fourmis")
+addpath("utils")
+addpath("algo voisinage variable")
+addpath("algo tabou")
+addpath("algo grasp")
+addpath("algo recui")
 # Initialisation ----------------
 
   fileName = 'instance1.txt';
@@ -22,8 +27,8 @@ addpath("algo fourmis")
 
   %[ring ,star_matrice,star]=Voisinage_variable(cost_ring,cost_star,ring ,star_matrice,star);
   %[ring ,star_matrice,star]=recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, 10);
-  [ring ,star_matrice,star]=fourmis(cost_ring, cost_star, ring, star_matrice, star);
-  %MARCHE PAS
+  #[ring ,star_matrice,star]=fourmis(cost_ring, cost_star, ring, star_matrice, star);
+  
 # Verification de la solution  --------------------------
 
   Verif(ring ,star_matrice,star)
