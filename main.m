@@ -1,10 +1,11 @@
-# Ajoute les fonctions à l'interieur du dossier fourni aux fonctions connus
+clear all;clc;
+# Ajoute les fonctions ï¿½ l'interieur du dossier fourni aux fonctions connus
 addpath("algo fourmis")
 addpath("utils")
 addpath("algo voisinage variable")
 addpath("algo tabou")
-##addpath("algo grasp")
-##addpath("algo recui")
+#addpath("algo grasp")
+#addpath("algo recui")
 # Initialisation ----------------
 
   fileName = 'instance1.txt';
@@ -20,7 +21,7 @@ addpath("algo tabou")
 
   % initialisation aleatoire
 
-  [ring ,star_matrice,star]=Ini_min_somme(cost_ring,cost_star);
+  [ring ,star_matrice,star]=Init_all_ring(cost_ring,cost_star);
 
 
 # Algorithme --------------------------
@@ -28,7 +29,7 @@ addpath("algo tabou")
   [ring ,star_matrice,star]=Voisinage_variable(cost_ring,cost_star,ring ,star_matrice,star);
   %[ring ,star_matrice,star]=recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, 10);
   #[ring ,star_matrice,star]=fourmis(cost_ring, cost_star, ring, star_matrice, star);
-  
+
 # Verification de la solution  --------------------------
 
   Verif(ring ,star_matrice,star)
