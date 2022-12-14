@@ -54,7 +54,7 @@ function [ring]=TSP_recuit(ring,cost_ring)
        %mise à jour de la nouvelle meilleure valeur 
        if new_valeur<best_valeur
          best_ring=new_ring ;
-         best_valeur=new_valeur
+         best_valeur=new_valeur;
          
        endif
       
