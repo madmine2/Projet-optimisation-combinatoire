@@ -12,7 +12,7 @@ function [ring,star_mat,star,sol] = grasp1(cost_ring, cost_star, alpha)
     bestsol=0;
     sol=[];
 
-    while t < 3*60
+    while t < 1*60
 
         ring = [1];
         star = [];
@@ -82,7 +82,7 @@ function [ring,star_mat,star,sol] = grasp1(cost_ring, cost_star, alpha)
         endwhile
 
          star_mat = assignement (star,cost_star,ring);
-
+          Verif(ring ,star_mat,star,length(cost_ring))
          cout1 = cout(cost_ring,cost_star,ring,star_mat);
          sol(end+1)=cout1;
          x+=1;
