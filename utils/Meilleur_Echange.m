@@ -1,4 +1,4 @@
-function [best_ring,best_star_matrice,best_star,best_valeur]=Meilleur_Echange(cost_ring,cost_star,ring,star_matrice,star)
+function [best_ring,best_star_mat,best_star,best_valeur]=Meilleur_Echange(cost_ring,cost_star,ring,star_matrice,star)
 
   best_ring=ring ;
   best_star=star;
@@ -26,7 +26,7 @@ function [best_ring,best_star_matrice,best_star,best_valeur]=Meilleur_Echange(co
            
               best_ring=new_ring ;
               best_star=new_star;
-              best_star_matrice=newstar_matrice;
+              best_star_mat=newstar_matrice;
               best_valeur=new_val;
         endif 
             

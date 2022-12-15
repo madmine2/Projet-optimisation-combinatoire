@@ -1,5 +1,10 @@
-function [ring,star_mat,star,sol] = grasp1(cost_ring, cost_star, alpha)
+function [best_ring,best_star_mat,best_star,best_value] = grasp1(cost_ring, cost_star,time)
     tic;
+    N=length(cost_ring);
+    best_ring=[];
+    best_star=[];
+    best_star_mat=rand(N,N);
+    best_value=Inf 
 
     N=length(cost_ring);
     ring = [1];
@@ -12,8 +17,10 @@ function [ring,star_mat,star,sol] = grasp1(cost_ring, cost_star, alpha)
     bestsol=0;
     sol=[];
 
-    while t < 3*60
-
+    while t < time
+      
+      for alpha=0:0.01:0.4
+        disp('grasp')
         ring = [1];
         star = [];
         possible = 2:N;
@@ -84,23 +91,31 @@ function [ring,star_mat,star,sol] = grasp1(cost_ring, cost_star, alpha)
          star_mat = assignement (star,cost_star,ring);
 
          cout1 = cout(cost_ring,cost_star,ring,star_mat);
-         sol(end+1)=cout1;
-         x+=1;
+         
+         if cout1<best_value  
+           best_ring=ring;
+           best_star=star;
+           best_star_mat=star_mat;
+           best_value=cout1
+         endif 
+
+##         do 
+##           [ring ,star_mat,star]=Meilleur_Voisin(cost_ring,cost_star,ring,star_mat,star);
+##            new_cout = cout(cost_ring,cost_star,ring,star_mat)
+##           if cout1<best_value  
+##             best_ring=ring;
+##             best_star=star;
+##             best_star_mat=star_mat;
+##             best_value=cout1
+##           else
+##             break 
+##           endif 
+##            
+##         until new_cout>best_value
+       end 
 
 
-         [ring ,star_mat,star]=Ajout(cost_ring,cost_star,ring,star_mat,star);
-         cout1 = cout(cost_ring,cost_star,ring,star_mat);
-         sol(end+1)=cout1;
-
-         [ring ,star_matrice,star]=Echange(cost_ring,cost_star,ring,star_mat,star);
-         cout1 = cout(cost_ring,cost_star,ring,star_mat);
-         sol(end+1)=cout1;
-
-         [ring ,star_matrice,star]=Supression(cost_ring,cost_star,ring,star_mat,star);
-         cout1 = cout(cost_ring,cost_star,ring,star_mat);
-         sol(end+1)=cout1;
-
-         bestsol=min(sol)
+        
 
     t=toc ;
     endwhile

@@ -1,5 +1,6 @@
 function [best_ring,best_star_mat,best_star]=Recuit_variable(cost_ring,cost_star,ring ,star_matrice,star)
   % initialisation 
+  disp('recuit') 
   tic;
   N=length(star_matrice);
   best_ring=ring ;
@@ -14,7 +15,7 @@ function [best_ring,best_star_mat,best_star]=Recuit_variable(cost_ring,cost_star
   tic;
   % paramètre du recuit simulé 
   pi=0.8;
-  pallier= N;
+  pallier= 4*N^1.5;
   facteurT=0.9;
   % recherche de la température
   ecart_type=0;
@@ -27,7 +28,7 @@ function [best_ring,best_star_mat,best_star]=Recuit_variable(cost_ring,cost_star
 
 
   
-  while t<3*60
+  while t<60
    
     itt=1;
     fige=true;
@@ -37,21 +38,21 @@ function [best_ring,best_star_mat,best_star]=Recuit_variable(cost_ring,cost_star
       
       if mod(k,4)==0 
         disp('a')
-        [new_ring ,new_star_matrice,new_star,new_valeur]=Meilleur_Ajout(cost_ring,cost_star,ring,star_matrice,star);
-        Verif(new_ring ,new_star_matrice,new_star)
+        [new_ring ,new_star_matrice,new_star,new_valeur]=Ajout(cost_ring,cost_star,ring,star_matrice,star);
+        
        
        elseif mod(k,4)==1
         disp('p')
-        [new_ring ,new_star_matrice,new_star,new_valeur]=Meilleur_Permutation(cost_ring,cost_star,ring,star_matrice,star);
-        Verif(new_ring ,new_star_matrice,new_star)
+        [new_ring ,new_star_matrice,new_star,new_valeur]=Permutation(cost_ring,cost_star,ring,star_matrice,star);
+     
        elseif mod(k,4)==2 
         disp('e')
-        [new_ring ,new_star_matrice,new_star,new_valeur]=Meilleur_Echange(cost_ring,cost_star,ring,star_matrice,star);
-        Verif(new_ring ,new_star_matrice,new_star)
+        [new_ring ,new_star_matrice,new_star,new_valeur]=Echange(cost_ring,cost_star,ring,star_matrice,star);
+     
        else
         disp('s')
-         [new_ring ,new_star_matrice,new_star,new_valeur]=Meilleur_Supression(cost_ring,cost_star,ring,star_matrice,star);
-         Verif(new_ring ,new_star_matrice,new_star)
+         [new_ring ,new_star_matrice,new_star,new_valeur]=Supression(cost_ring,cost_star,ring,star_matrice,star);
+      
       
        endif
        

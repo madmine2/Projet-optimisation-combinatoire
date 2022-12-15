@@ -4,7 +4,7 @@ addpath("algo fourmis")
 addpath("utils")
 addpath("algo voisinage variable")
 addpath("algo tabou")
-#addpath("algo grasp")
+addpath("algo grasp")
 #addpath("algo recui")
 # Initialisation ----------------
 
@@ -20,12 +20,15 @@ addpath("algo tabou")
 # Solution initiale  --------------------------
 
   % initialisation aleatoire
+   alpha=0.1;
 
-  [ring ,star_matrice,star]=Ini_min_somme(cost_ring,cost_star);
+  [ring,star_matrice,star,sol] = grasp1(cost_ring, cost_star,60);
 
 
 # Algorithme --------------------------
   
+  [ring ,star_matrice,star]=Recuit_variable(cost_ring,cost_star,ring ,star_matrice,star)
+  [ring ,star_matrice,star]=Recuit_variable(cost_ring,cost_star,ring ,star_matrice,star)
   [ring ,star_matrice,star]=Recuit_variable(cost_ring,cost_star,ring ,star_matrice,star)
   %[ring ,star_matrice,star]=recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, 10);
   #[ring ,star_matrice,star]=fourmis(cost_ring, cost_star, ring, star_matrice, star);
