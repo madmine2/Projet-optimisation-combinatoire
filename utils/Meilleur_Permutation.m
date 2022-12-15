@@ -2,13 +2,13 @@ function [best_ring,best_star_matrice,best_star,best_valeur]=Meilleur_Permutatio
 
   best_ring=ring ;
   best_star=star;
-  best_star_mat=star_matrice;
+  best_star_matrice=star_matrice;
   best_valeur_ring=Inf;
   
 
   
   for i=1:length(ring)
-    for j=1:length(star)
+    for j=1:length(ring)
         if i==j
           continue 
         endif
@@ -21,7 +21,7 @@ function [best_ring,best_star_matrice,best_star,best_valeur]=Meilleur_Permutatio
         if new_val_ring<best_valeur_ring
            
               best_ring=new_ring ;
-              best_valeur_ring=new_val;
+              best_valeur_ring=new_val_ring;
         endif 
             
 
