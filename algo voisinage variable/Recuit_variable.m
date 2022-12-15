@@ -14,7 +14,7 @@ function [best_ring,best_star_mat,best_star]=Recuit_variable(cost_ring,cost_star
   tic;
   % paramètre du recuit simulé 
   pi=0.8;
-  pallier= N^(1.5);
+  pallier= N;
   facteurT=0.9;
   % recherche de la température
   ecart_type=0;
