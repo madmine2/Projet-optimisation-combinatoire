@@ -2,62 +2,37 @@ function [newring ,newstar_matrice, newstar] =  recuit_simule(cost_ring, cost_st
 newring = ring;
 newstar = star;
 newstar_matrice =star_matrice;
-%température ( la faire varier)
-T = 10000
-%cout initaial
-newval = cout(cost_ring,cost_star,newring,newstar_matrice)
-%dirtribution de Boltzman pour probabilté d'acceptation
-rand
+newvalue = cout(cost_ring,cost_star,newring,newstar_matrice)
+
+% Définir les paramètres du recuit simulé
+temperature = 100; % La température initiale
+alpha = 0.99; % La vitesse de refroidissement
+
 t=0;
 while t< 3*60
-[ring, star_matrice, star]= Echange(cost_ring, cost_star, newring, newstar_matrice, newstar);
-val = cout(cost_ring,cost_star,ring,star_matrice)
-F = newval - val
-   if F>0
-     newring = ring;
-     newstar = star;
-     newstar_matrice =star_matrice;
-   else
-     p = exp(F/T)
-     if p>rand
-       newring = ring;
-       newstar = star;
-       newstar_matrice =star_matrice;
-     else
-       [ring, star_matrice, star]= Ajout(cost_ring, cost_star, newring, newstar_matrice, newstar);
-       val = cout(cost_ring,cost_star,ring,star_matrice)
-       F = newval - val
-       if F>0
-         newring = ring;
-         newstar = star;
-         newstar_matrice =star_matrice;
-       else
-         p = exp(F/T)
-         if p>rand
-           newring = ring;
-           newstar = star;
-           newstar_matrice =star_matrice;
-         else
-          [ring, star_matrice, star]=  Supression(cost_ring, cost_star, newring, newstar_matrice, newstar);
-           val = cout(cost_ring,cost_star,ring,star_matrice)
-           F = newval - val
-           if F>0
-             newring = ring;
-             newstar = star;
-             newstar_matrice =star_matrice;
-           else
-             p = exp(F/T)
-             if p>rand
-               newring = ring;
-               newstar = star;
-               newstar_matrice =star_matrice;
-             endif
-           endif
-         endif
-       endif
-     endif
-    endif
-newval=val
-T=0.9*T
+  
+% Générer un voisin
+[best_ring,best_star_mat,best_star,best_value]=Meilleur_Voisin(cost_ring,cost_star,ring,star_matrice,star);
+ 
+% Calculer la différence d'énergie entre la nouvelle solution et l'ancienne
+delta_e = best_value - newvalue;
+
+% Si la nouvelle solution est meilleure, la sélectionner
+if delta_e < 0
+  newring = best_ring;
+  newstar = best_star;
+  newstar_matrice = best_star_mat;
+% Sinon, sélectionner la nouvelle solution avec une probabilité dépendante de la température
+else
+  prob = exp(-delta_e / temperature);
+  if rand() < prob
+    newring = best_ring;
+    newstar = best_star;
+    newstar_matrice = best_star_mat;
+   end
+end
+newvalue
+% Refroidir la température
+  temperature = temperature * alpha;
 endwhile
 endfunction
