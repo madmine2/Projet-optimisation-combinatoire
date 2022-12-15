@@ -4,7 +4,7 @@ addpath("algo fourmis")
 addpath("utils")
 addpath("algo voisinage variable")
 addpath("algo tabou")
-#addpath("algo grasp")
+addpath("algo grasp")
 #addpath("algo recui")
 # Initialisation ----------------
 
@@ -15,7 +15,7 @@ addpath("algo tabou")
   cost_ring = file(2:1+N,:);
   cost_star = file(2+N:1+2*N,:);
 
-
+  alpha=0.03;
 
 # Solution initiale  --------------------------
 
@@ -25,11 +25,11 @@ addpath("algo tabou")
 
 
 # Algorithme --------------------------
-  
-  [ring ,star_matrice,star]=Recuit_variable(cost_ring,cost_star,ring ,star_matrice,star)
+
+  #[ring ,star_matrice,star]=Recuit_variable(cost_ring,cost_star,ring ,star_matrice,star)
   %[ring ,star_matrice,star]=recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, 10);
   #[ring ,star_matrice,star]=fourmis(cost_ring, cost_star, ring, star_matrice, star);
-
+  [ring,star_mat,star,sol] = grasp1(cost_ring, cost_star, alpha);
 # Verification de la solution  --------------------------
 
   Verif(ring ,star_matrice,star)
@@ -47,7 +47,4 @@ addpath("algo tabou")
   ##dlmwrite(['output/out',fileName],"STAR",delim="", "-append");
   ##dlmwrite(['output/out',fileName],ListeStar,delim=" ", "-append");
   ##dlmwrite(['output/out',fileName],["COST ",mat2str(Cost)],delim="", "-append");
-
-
-
 

@@ -1,5 +1,4 @@
-function [villeActuelle,listeTrajetFourmi,coutTrajetFourmi,listeVilleEncoreDisponibles] = choixDuTrajetIVersJ(ring,villeActuelle, listeTrajetFourmi,nombreLieu, matricePheromone,matriceDeltaPheromone,cost_ring, alpha, beta,coutTrajetFourmi,listeVilleEncoreDisponibles)
-  pkg load statistics;
+function [villeActuelle,listeVilleEncoreDisponibles,coutTrajetFourmi] = choixDuTrajetIVersJ(coutTrajetFourmi,ring,villeActuelle,nombreLieu, matricePheromone,matriceDeltaPheromone,cost_ring, alpha, beta,listeVilleEncoreDisponibles)
   #préparations-------------------------------------------------------------
   listeProbaDuTrajetIVersJ = zeros(1,nombreLieu);
   poidsTrajetTotal = 0;
@@ -21,27 +20,25 @@ endfor
   # et on prend le chemin dont la probabilite a fait basculer la balance.
   #ça fait surtout une difference au debut quand les probabilite sont relativement egale, apres plusieurs iterations il va prendre le chemin ayant la plus grande probabilite 
   
-  nSeuilProbabilitePourChoixDuChemin = rand()
+  nSeuilProbabilitePourChoixDuChemin = rand();
   sommeProbaDesTrajetIVersJ = 0;
   
   # calcul des probabilités ----------------------------------------------
   for j = 1 : nombreLieu
-    if any(listeVilleEncoreDisponibles == ring(j)) == 1                         # si trajet vers lui-même alors 0                                                              # sinon calcul de la probabilite de prendre ce chemin
-      j
+    if any(listeVilleEncoreDisponibles == ring(j)) == 1                   # si trajet vers lui-même alors 0                                                              # sinon calcul de la probabilite de prendre ce chemin
       tau = matricePheromone(villeActuelle,j) + matriceDeltaPheromone(villeActuelle,j);# tau(i)(j) represente la quantite de pheromone sur le chemin entre la ville i et la ville j. C'est la pseudo-memoire du systeme. Delta represente les pheromone ajoute par les fourmis precedentes du même tour, c'est separer pour distinguer durant le processus d'evaluation
-      distanceIJ = cost_ring(ring(villeActuelle), ring(j))
+      distanceIJ = cost_ring(ring(villeActuelle), ring(j));
       eta = 1 /distanceIJ ;                                               # eta (i)(j) represente l'inverse de la distance entre la ville i et la ville j. C'est la visibilite du systeme.   
       poidsTrajetActuel = (tau ^ alpha) * (eta ^ beta);                   # le poid du trajet i vers j 
       listeProbaDuTrajetIVersJ(j) =poidsTrajetActuel / poidsTrajetTotal;  # rapport du poids du trajet actuel sur le poids total (comme ça la somme des probabilités des trajets de i vers tous les j vaut 1) (=normalisation)    
     endif 
-    sommeProbaDesTrajetIVersJ +=   listeProbaDuTrajetIVersJ(j)
+    sommeProbaDesTrajetIVersJ +=   listeProbaDuTrajetIVersJ(j);
     
     # tirage de la route en fonction des probabilite calcule ---------------
     if sommeProbaDesTrajetIVersJ >= nSeuilProbabilitePourChoixDuChemin
-      listeTrajetFourmi = [listeTrajetFourmi j]
-      coutTrajetFourmi += cost_ring(ring(villeActuelle), ring(j));
       villeActuelle = j;
-      break                                                             #si la route est tire alors on break
+      coutTrajetFourmi += cost_ring(ring(villeActuelle), ring(j));
+      break                                                               #si la route est tire alors on break
     endif
   endfor
 
