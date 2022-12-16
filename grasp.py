@@ -53,7 +53,7 @@ def grasp1(cost_ring, cost_star,times):
             options.append(i)
 
         if len(options) > 1:
-          r = random.randint(1,len(options))
+          r = random.randint(1,len(options)-1)
         else:
           r = 1
 

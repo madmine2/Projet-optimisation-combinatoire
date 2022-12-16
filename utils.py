@@ -78,7 +78,7 @@ def assignement(star, cost_star, ring):
 
     star_matrice = np.zeros((N, N))
     for i in star:
-        minval, idx = min(enumerate(cost_star[i, ring]), key=lambda x: x[1])
+        minval, idx = min(enumerate(cost_star[i]), key=lambda x: x[1])
         star_matrice[i, ring[idx]] = 1
 
     return star_matrice
@@ -100,13 +100,13 @@ def cout(cost_ring, cost_star, ring, star_matrice):
   # cout du ring
   for i in range(1, len(ring)):
     cout_ring += cost_ring[ring[i], ring[i - 1]]
-  cout_ring += cost_ring[ring[0], ring[-1]]
+  cout_ring += cost_ring[ring[0]][ ring[-1]]
 
   # cout des stars
   for i in range(N):
     for j in ring:
       if star_matrice[i, j] == 1:
-        cout_star += cost_star[j, i]
+        cout_star += cost_star[j][i]
 
   cout_total = cout_star + cout_ring
   return cout_total
