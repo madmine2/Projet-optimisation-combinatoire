@@ -1,13 +1,5 @@
 import random
 import numpy as np
-import time
-import numpy as np
-
-
-
-
-
-
 
 # Fonction qui calcule le coût total
 def cout_total(cost_ring, cost_star, ring, star_matrice):
@@ -69,10 +61,6 @@ def ajout(cost_ring, cost_star, ring, star_matrice, star):
             best_valeur = new_val
 
     return best_ring, best_star_mat, best_star
-
-
-
-import numpy as np
 
 def extrait_star(centre_star, listestar):
   elem_star = []
@@ -376,7 +364,7 @@ def Recuit_variable(cost_ring, cost_star, ring, star_matrice, star):
 
 # Initialisation ----------------
 
-fileName = "instance1.txt"
+fileName = "instances/instance1.txt"
 
 with open(fileName,'r') as fin :
     N = int(fin.readline())
