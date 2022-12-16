@@ -91,10 +91,11 @@ def read_instances(fileName):
     return cost_ring, cost_star
 
 # Solution initiale  --------------------------
-
+fileName = 'instances/instance1.txt'
+cost_ring, cost_star = read_instances(fileName)
 # initialisation aleatoire
-# alpha = 0.1
-# ring, star_matrice, star, sol = grasp1(cost_ring, cost_star, 60)
+alpha = 0.1
+ring, star_matrice, star, sol = grasp1(cost_ring, cost_star, 60)
 #
 # # Algorithme --------------------------
 #
@@ -104,11 +105,11 @@ def read_instances(fileName):
 #
 # # Verification de la solution  --------------------------
 #
-# verif(ring, star_matrice, star)
+verif(ring, star_matrice, star)
 #
 # # Calcul du Cost ----------------
 #
-# cout_total = cout(cost_ring, cost_star, ring, star_matrice)
+cout_total = cout(cost_ring, cost_star, ring, star_matrice)
 #
 # # Output ------------------------
 #
