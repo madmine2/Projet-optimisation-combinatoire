@@ -4,7 +4,6 @@ import numpy as np
 
 # Fonction qui calcule le coût total
 def cout_total(cost_ring, cost_star, ring, star_matrice):
-    N = len(cost_ring)
     cout_ring = 0
     cout_star = 0
 
@@ -14,7 +13,7 @@ def cout_total(cost_ring, cost_star, ring, star_matrice):
     cout_ring += cost_ring[ring[0]][ring[-1]]
 
     # Coût des stars
-    for i in range(N):
+    for i in range(len(cost_ring)):
         for j in ring:
             if star_matrice[i, j] == 1:
                 cout_star += cost_star[j][i]
@@ -91,18 +90,16 @@ def v1_permut(ring, num1, num2):
 
 
 def cout(cost_ring, cost_star, ring, star_matrice):
-    N = len(cost_ring)
-
     cout_ring = 0
     cout_star = 0
 
     # cout du ring
-    for i in range(1, len(ring)):
-        cout_ring += cost_ring[ring[i], ring[i - 1]]
+    for i in range(len(ring)):
+        cout_ring += cost_ring[ring[i]][ring[i - 1]]
     cout_ring += cost_ring[ring[0]][ring[-1]]
 
     # cout des stars
-    for i in range(N):
+    for i in range(len(cost_ring)):
         for j in ring:
             if star_matrice[i, j] == 1:
                 cout_star += cost_star[j][i]
