@@ -7,6 +7,19 @@ def cout_total(cost_ring, cost_star, ring, star_matrice):
     cout_ring = 0
     cout_star = 0
 
+    # cout du ring
+    for i in range(len(ring)):
+        cout_ring += cost_ring[ring[i]][ring[i - 1]]
+    cout_ring += cost_ring[ring[0]][ring[-1]]
+
+    # cout des stars
+    for i in range(len(cost_ring)):
+        for j in ring:
+            if star_matrice[i, j] == 1:
+                cout_star += cost_star[j][i]
+
+    cout_total = cout_star + cout_ring
+    return cout_total
     # Coût du ring
     for i in range(len(ring) - 1):
         cout_ring += cost_ring[ring[i + 1]][ring[i]]
