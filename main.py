@@ -1,6 +1,6 @@
 import random
 import numpy as np
-
+import time
 import numpy as np
 
 
@@ -217,7 +217,7 @@ def verif(ring, star_matrice, star, M):
         else:
             print("Il manque l'élément"), print(i)
 
-def grasp1(cost_ring, cost_star, time):
+def grasp1(cost_ring, cost_star,times):
   start = time.perf_counter()
   N = len(cost_ring)
   best_ring = []
@@ -235,7 +235,7 @@ def grasp1(cost_ring, cost_star, time):
   bestsol = 0
   sol = []
 
-  while t < time:
+  while t < times:
     for alpha in np.arange(0, 0.41, 0.01):
       ring = [1]
       star = []
@@ -379,15 +379,16 @@ def Recuit_variable(cost_ring, cost_star, ring, star_matrice, star):
 fileName = "instance1.txt"
 
 with open(fileName,'r') as fin :
-    file = fin.read().replace('\n',"").replace('',"").split(" ")
-    N = int(file[0])
+    N = int(fin.readline())
+
     cost_ring = []
     cost_star = []
     for i in range(N) :
-        cost_ring.append(file[1+i*N:1+(i+1)*(N-1)])
+        a = fin.readline().split(" ")[1:-1]
+        #cost_ring.append([int(a) for a in ])
 
     for i in range(N):
-        cost_star.append(file[(1 + N*N)+i*N:(1 + N*N)+(i+1)*(N-1)])
+        cost_star.append([int(a) for a in fin.readline().split(" ")][1:-1])
 
 # Solution initiale  --------------------------
 
