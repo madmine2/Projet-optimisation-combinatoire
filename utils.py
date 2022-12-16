@@ -138,8 +138,7 @@ def ini_min_somme(cost_ring, cost_star):
     N = len(cost_ring)
     ring = []
     star = []
-    star_matrice = np.zeros((N, N))
-    for i in range(1, N + 1):
+    for i in range(N):
         if random.random() < 0.5:
             ring.append(i)
         else:
@@ -186,7 +185,7 @@ def verif(ring, star_matrice, star, M):
     if len(ring) + len(star) != M:
         print("star et ring n ont pas la bonne taille")
 
-    for i in range(1, N + 1):
+    for i in range(N):
         if i in ring:
             if i in star:
                 print("Cet élément est dans le ring et star"), print(i)
