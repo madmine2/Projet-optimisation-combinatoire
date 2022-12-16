@@ -1,7 +1,7 @@
 from utils import *
 # Fonction qui calcule le coût total
 from random import randrange
-
+import time
 def grasp1(cost_ring, cost_star, times):
   start = time.perf_counter()
   N = len(cost_ring)
@@ -9,7 +9,8 @@ def grasp1(cost_ring, cost_star, times):
   best_star = []
   best_star_mat = np.random.rand(N,N)
   best_value = float("inf")
-
+  bestlist=[]
+  
   ring = [0]
   star = []
   possible = [i for i in range(1, N)]
@@ -22,7 +23,7 @@ def grasp1(cost_ring, cost_star, times):
   while t < times:
       
     for alpha in np.arange(0, 0.41, 0.01):
-        
+      print('alpha=', alpha) 
       ring = [0]
       star = []
       possible = [i for i in range(1, N)]
@@ -76,16 +77,21 @@ def grasp1(cost_ring, cost_star, times):
           star.append(options[r])
 
       star_mat = assignement(star, cost_star, ring)
+      
       verif(ring, star_mat, star, len(cost_ring))
+      
       cout1 = cout_total(cost_ring, cost_star, ring, star_mat)
-
+      print('cout1',cout1)
+      
       if cout1 < best_value:
         best_ring = ring
         best_star = star
         best_star_mat = star_mat
         best_value = cout1
-
+        
+        
     end = time.perf_counter()
     t = end - start
-
-
+    bestlist.append(best_value)
+    print('best',min(bestlist))
+    #return best_value
