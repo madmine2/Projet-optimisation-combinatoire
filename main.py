@@ -37,6 +37,8 @@ def cout_ring(ring, cost_ring):
 
 
 def ajout(cost_ring, cost_star, ring, star_matrice, star):
+    if len(ring) == len(star_matrice) :
+        return ring, star_matrice, star
     print("ajout")
     N = len(star)
     num = random.randint(1, N)
@@ -148,6 +150,8 @@ def ini_min_somme(cost_ring, cost_star):
     return ring, star_matrice, star
 
 def supression(cost_ring, cost_star, ring, star_matrice, star):
+    if len(ring) < 2 :
+        return ring, star_matrice, star
     N = len(ring)
     num = random.randint(1, N)
 
