@@ -1,6 +1,6 @@
 import random
 import numpy as np
-
+import time
 # Fonction qui calcule le coût total
 def cout_total(cost_ring, cost_star, ring, star_matrice):
   N = len(cost_ring)
@@ -227,7 +227,7 @@ def grasp1(cost_ring, cost_star,times):
     for alpha in np.arange(0, 0.41, 0.01):
       ring = [1]
       star = []
-      possible = list(range(2,N+1))
+      possible = list(range(1,N))
 
       while len(ring) + len(star) < N:
         maximum = 0
@@ -372,11 +372,12 @@ with open(fileName,'r') as fin :
     cost_ring = []
     cost_star = []
     for i in range(N) :
-        a = fin.readline().split(" ")[1:-1]
-        #cost_ring.append([int(a) for a in ])
+        b = fin.read(1) # pour enlever le premier caractére qui est un espace
+        cost_ring.append([int(a) for a in fin.readline().rstrip().split(" ")])
 
     for i in range(N):
-        cost_star.append([int(a) for a in fin.readline().split(" ")][1:-1])
+        b = fin.read(1)  # pour enlever le premier caractére qui est un espace
+        cost_star.append([int(a) for a in fin.readline().rstrip().split(" ")])
 
 # Solution initiale  --------------------------
 
