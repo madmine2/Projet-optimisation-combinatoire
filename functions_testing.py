@@ -16,3 +16,9 @@ verif(ring, star_matrice, star, len(cost_ring))  # GOOD
 best_ring, best_star_mat, best_star = supression(cost_ring, cost_star, ring, star_matrice, star)  # GOOD
 
 verif(ring, star_matrice, star, len(cost_ring))  # GOOD
+
+best_ring, best_star_mat, best_star = echange(cost_ring, cost_star, ring, star_matrice, star)  # GOOD
+
+verif(ring, star_matrice, star, len(cost_ring))  # GOOD
+
+# TODO: tester échange

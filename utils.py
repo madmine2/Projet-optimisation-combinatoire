@@ -98,16 +98,14 @@ def v1_permut(ring, num1, num2):
 
 
 def echange(cost_ring, cost_star, ring, star_matrice, star):
-    N = len(star)
-    num = random.randint(1, N)
-    elem_star = star[num - 1]
+    num = random.randint(0, len(star) - 1)
+    elem_star = star[num]
     centre_star = np.where(star_matrice[elem_star, :] == 1)
     idx_centre = np.where(ring == centre_star)
     new_ring = ring
     new_ring[idx_centre] = elem_star
     new_star = star
-
-    del new_star[num - 1]
+    new_star.pop(num)
     new_star.append(centre_star)
     newstar_matrice = assignement(new_star, cost_star, new_ring)
 
@@ -132,8 +130,7 @@ def ini_min_somme(cost_ring, cost_star):
 def supression(cost_ring, cost_star, ring, star_matrice, star):
     if len(ring) < 2:
         return ring, star_matrice, star
-    N = len(ring)
-    num = random.randint(1, N -1)
+    num = random.randint(1, len(ring) - 1)
     best_ring = ring
     best_star = star
     best_star_mat = star_matrice

@@ -21,7 +21,7 @@ fileName = 'instances/instance1.txt'
 cost_ring, cost_star = read_instances(fileName)
 # initialisation aleatoire
 
-grasp1(cost_ring, cost_star, 60)
+# grasp1(cost_ring, cost_star, 60)
 #
 # # Algorithme --------------------------
 #
@@ -35,7 +35,7 @@ grasp1(cost_ring, cost_star, 60)
 #
 # # Calcul du Cost ----------------
 #
-cout_total = cout(cost_ring, cost_star, ring, star_matrice)
+# cout_total = cout(cost_ring, cost_star, ring, star_matrice)
 #
 # # Output ------------------------
 #
