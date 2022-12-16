@@ -37,27 +37,24 @@ def ajout(cost_ring, cost_star, ring, star_matrice, star):
     if len(ring) == len(star_matrice):
         return ring, star_matrice, star
     print("ajout")
-    N = len(star)
-    num = random.randint(1, N)
-    elem_star = star[num - 1]
-    # ajout
-    ring.append(elem_star)
-    del star[num - 1]
+    num = random.randint(0, len(star) - 1)
+    elem_star = star[num]
+    ring.append(elem_star)  # ajout dans le ring
+    star.pop(num)  # suppression dans le star
     star_matrice = assignement(star, cost_star, ring)
 
     best_ring = ring
     best_star = star
     best_star_mat = star_matrice
-    best_valeur = cout_ring(ring, cost_ring)
-
-    # on conserve la meilleure ring
-    for i in range(len(ring) - 1):
-        new_ring = v1_permut(ring, i, len(ring))
-
-        new_val = cout(cost_ring, cost_star, new_ring, star_matrice)
-        if new_val < best_valeur:
-            best_ring = new_ring
-            best_valeur = new_val
+    # best_valeur = cout_ring(ring, cost_ring)
+    #
+    # # on conserve le meilleur ring
+    # for i in range(len(ring)):
+    #     new_ring = v1_permut(ring, i, len(ring) - 1)
+    #     new_val = cout_total(cost_ring, cost_star, new_ring, star_matrice)
+    #     if new_val < best_valeur:
+    #         best_ring = new_ring
+    #         best_valeur = new_val
 
     return best_ring, best_star_mat, best_star
 
@@ -65,7 +62,7 @@ def ajout(cost_ring, cost_star, ring, star_matrice, star):
 def extrait_star(centre_star, listestar):
     elem_star = []
     N = len(listestar)
-    for i in range(1, N + 1):
+    for i in range(N):
         if listestar[i, centre_star] == 1:
             elem_star.append(i)
     return elem_star
@@ -83,10 +80,7 @@ def assignement(star, cost_star, ring):
 
 
 def v1_permut(ring, num1, num2):
-    temp = ring[num1]
-    ring[num1] = ring[num2]
-    ring[num2] = temp
-
+    ring[num1], ring[num2] = ring[num2], ring[num1]
     return ring
 
 
@@ -126,13 +120,12 @@ def supression(cost_ring, cost_star, ring, star_matrice, star):
     if len(ring) < 2:
         return ring, star_matrice, star
     N = len(ring)
-    num = random.randint(1, N)
-
+    num = random.randint(1, N -1)
     best_ring = ring
     best_star = star
     best_star_mat = star_matrice
     best_valeur = float("inf")
-    centre_star = ring[num - 1]
+    centre_star = ring[num]
     elem_star = extrait_star(centre_star, star_matrice)
 
     # supression
@@ -141,7 +134,7 @@ def supression(cost_ring, cost_star, ring, star_matrice, star):
     new_star = star
     new_star.append(centre_star)
     newstar_matrice = assignement(new_star, cost_star, new_ring)
-    new_val = cout(cost_ring, cost_star, new_ring, newstar_matrice)
+    new_val = cout_total(cost_ring, cost_star, new_ring, newstar_matrice)
     if new_val < best_valeur:
         print("suppression")
         best_ring = new_ring
@@ -164,7 +157,7 @@ def verif(ring, star_matrice, star, M):
             if i in star:
                 print("Cet élément est dans le ring et star"), print(i)
             else:
-                if not (star_matrice[i, :] == np.zeros((1, N))).all():
+                if not (star_matrice[i, :] == np.zeros(N)).all:
                     print("la ligne de la matrice n'est pas correcte"), print(i)
         elif len(np.where(ring == i)[0]) > 1:
             print("Cet élément est plusieus fois dans ring"), print(i)

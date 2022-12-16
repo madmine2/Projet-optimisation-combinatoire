@@ -1,14 +1,18 @@
-import utils
+from utils import *
 import main
 
 cost_ring, cost_star = main.read_instances(fileName = "instances/instance1.txt")  # GOOD
 
-ring, star_matrice, star = utils.ini_min_somme(cost_ring, cost_star)  # GOOD
+ring, star_matrice, star = ini_min_somme(cost_ring, cost_star)  # GOOD
 
-utils.verif(ring, star_matrice, star, len(cost_ring))  # GOOD
+verif(ring, star_matrice, star, len(cost_ring))  # GOOD
 
-cout_total = utils.cout_total(cost_ring, cost_star, ring, star_matrice)
+cout_total = cout_total(cost_ring, cost_star, ring, star_matrice)  # GOOD
 
-cout = utils.cout(cost_ring, cost_star, ring, star_matrice)
+best_ring, best_star_mat, best_star = ajout(cost_ring, cost_star, ring, star_matrice, star)  # GOOD
 
+verif(ring, star_matrice, star, len(cost_ring))  # GOOD
 
+best_ring, best_star_mat, best_star = supression(cost_ring, cost_star, ring, star_matrice, star)  # GOOD
+
+verif(ring, star_matrice, star, len(cost_ring))  # GOOD

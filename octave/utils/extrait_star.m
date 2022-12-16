@@ -1,6 +1,6 @@
 
 
-function   [elem_star]=extrait_star(centre_star,listestar)
+function [elem_star]=extrait_star(centre_star,listestar)
   elem_star=[];
   N=length(listestar);
   for i=1:N

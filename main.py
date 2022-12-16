@@ -82,11 +82,11 @@ def read_instances(fileName):
         cost_ring = []
         cost_star = []
         for i in range(N) :
-            b = fin.read(1) # pour enlever le premier caractére qui est un espace
+            _ = fin.read(1) # pour enlever le premier caractére qui est un espace
             cost_ring.append([int(a) for a in fin.readline().rstrip().split(" ")])
 
         for i in range(N):
-            b = fin.read(1)  # pour enlever le premier caractére qui est un espace
+            _ = fin.read(1)  # pour enlever le premier caractére qui est un espace
             cost_star.append([int(a) for a in fin.readline().rstrip().split(" ")])
     return cost_ring, cost_star
 
