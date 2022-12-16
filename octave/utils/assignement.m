@@ -1,4 +1,4 @@
-# fonction qui assigne les éléments stars au éléments de ring en minimisant le cout 
+# fonction qui assigne les ï¿½lï¿½ments stars au ï¿½lï¿½ments de ring en minimisant le cout 
 function  star_matrice = assignement (star,cost_star,ring )
   N=length(cost_star);
   

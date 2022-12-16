@@ -76,7 +76,7 @@ def assignement(star, cost_star, ring):
 
     star_matrice = np.zeros((N, N))
     for i in star:
-        minval, idx = min(enumerate(cost_star[i, ring]), key=lambda x: x[1])
+        minval, idx = min(enumerate(cost_star[i]), key=lambda x: x[1])  # cette fct retourne le plus petit élément d'une list et son index
         star_matrice[i, ring[idx]] = 1
 
     return star_matrice
@@ -136,8 +136,7 @@ def ini_min_somme(cost_ring, cost_star):
     N = len(cost_ring)
     ring = []
     star = []
-    star_matrice = np.zeros((N, N))
-    for i in range(1, N + 1):
+    for i in range(N):
         if random.random() < 0.5:
             ring.append(i)
         else:
@@ -182,7 +181,7 @@ def verif(ring, star_matrice, star, M):
     if len(ring) + len(star) != M:
         print("star et ring n ont pas la bonne taille")
 
-    for i in range(1, N + 1):
+    for i in range(N):
         if i in ring:
             if i in star:
                 print("Cet élément est dans le ring et star"), print(i)
@@ -364,45 +363,44 @@ def Recuit_variable(cost_ring, cost_star, ring, star_matrice, star):
 
 # Initialisation ----------------
 
-fileName = "instances/instance1.txt"
+def read_instances(fileName):
+    with open(fileName,'r') as fin :
+        N = int(fin.readline())
+        cost_ring = []
+        cost_star = []
+        for i in range(N) :
+            b = fin.read(1) # pour enlever le premier caractére qui est un espace
+            cost_ring.append([int(a) for a in fin.readline().rstrip().split(" ")])
 
-with open(fileName,'r') as fin :
-    N = int(fin.readline())
-
-    cost_ring = []
-    cost_star = []
-    for i in range(N) :
-        b = fin.read(1) # pour enlever le premier caractére qui est un espace
-        cost_ring.append([int(a) for a in fin.readline().rstrip().split(" ")])
-
-    for i in range(N):
-        b = fin.read(1)  # pour enlever le premier caractére qui est un espace
-        cost_star.append([int(a) for a in fin.readline().rstrip().split(" ")])
+        for i in range(N):
+            b = fin.read(1)  # pour enlever le premier caractére qui est un espace
+            cost_star.append([int(a) for a in fin.readline().rstrip().split(" ")])
+    return cost_ring, cost_star
 
 # Solution initiale  --------------------------
 
 # initialisation aleatoire
-alpha = 0.1
-ring, star_matrice, star, sol = grasp1(cost_ring, cost_star, 60)
-
-# Algorithme --------------------------
-
-#ring, star_matrice, star = recuit_variable(cost_ring, cost_star, ring, star_matrice, star)
-#[ring ,star_matrice,star]=recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, 10);
-#[ring ,star_matrice,star]=fourmis(cost_ring, cost_star, ring, star_matrice, star);
-
-# Verification de la solution  --------------------------
-
-verif(ring, star_matrice, star)
-
-# Calcul du Cost ----------------
-
-cout_total = cout(cost_ring, cost_star, ring, star_matrice)
-
-# Output ------------------------
-
-# faire la transition
-
-##dlmwrite(['output/out',fileName],["RING ",mat2str(length(Listering))],delim="");
-##dlmwrite(['output/out',fileName],Listering,delim=" ", "-append");
-
+# alpha = 0.1
+# ring, star_matrice, star, sol = grasp1(cost_ring, cost_star, 60)
+#
+# # Algorithme --------------------------
+#
+# #ring, star_matrice, star = recuit_variable(cost_ring, cost_star, ring, star_matrice, star)
+# #[ring ,star_matrice,star]=recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, 10);
+# #[ring ,star_matrice,star]=fourmis(cost_ring, cost_star, ring, star_matrice, star);
+#
+# # Verification de la solution  --------------------------
+#
+# verif(ring, star_matrice, star)
+#
+# # Calcul du Cost ----------------
+#
+# cout_total = cout(cost_ring, cost_star, ring, star_matrice)
+#
+# # Output ------------------------
+#
+# # faire la transition
+#
+# ##dlmwrite(['output/out',fileName],["RING ",mat2str(length(Listering))],delim="");
+# ##dlmwrite(['output/out',fileName],Listering,delim=" ", "-append");
+#
