@@ -1,5 +1,4 @@
 import random
-
 import numpy as np
 
 
@@ -9,28 +8,15 @@ def cout_total(cost_ring, cost_star, ring, star_matrice):
     cout_star = 0
 
     # cout du ring
-    for i in range(len(ring)):
-        cout_ring += cost_ring[ring[i]][ring[i - 1]]
+    for i in range(len(ring) - 1):
+        cout_ring += cost_ring[ring[i]][ring[i + 1]]
     cout_ring += cost_ring[ring[0]][ring[-1]]
 
     # cout des stars
-    for i in range(len(cost_ring)):
-        for j in ring:
+    for i in range(len(cost_star)):
+        for j in range(len(cost_star)):
             if star_matrice[i, j] == 1:
-                cout_star += cost_star[j][i]
-
-    cout_total = cout_star + cout_ring
-    return cout_total
-    # Coût du ring
-    for i in range(len(ring) - 1):
-        cout_ring += cost_ring[ring[i + 1]][ring[i]]
-    cout_ring += cost_ring[ring[0]][ring[-1]]
-
-    # Coût des stars
-    for i in range(len(cost_ring)):
-        for j in ring:
-            if star_matrice[i, j] == 1:
-                cout_star += cost_star[j][i]
+                cout_star += cost_star[i][j]
 
     return cout_star + cout_ring
 
@@ -47,35 +33,34 @@ def cout_ring(ring, cost_ring):
 
 
 def ajout(cost_ring, cost_star, ring, star_matrice, star):
-    if len(ring) == len(star_matrice):
+    if len(ring) == len(cost_ring):  # je ne peux plus rien ajouter dans le ring
         return ring, star_matrice, star
-    print("ajout")
+    print("Ajout dans ring")
     num = random.randint(0, len(star) - 1)
     elem_star = star[num]
     ring.append(elem_star)  # ajout dans le ring
     star.pop(num)  # suppression dans le star
     star_matrice = assignement(star, cost_star, ring)
 
+    """ on fait des permutations afin de conserver le meilleur ring"""
     best_ring = ring
     best_star = star
     best_star_mat = star_matrice
-    # best_valeur = cout_ring(ring, cost_ring)
-    #
-    # # on conserve le meilleur ring
-    # for i in range(len(ring)):
-    #     new_ring = v1_permut(ring, i, len(ring) - 1)
-    #     new_val = cout_total(cost_ring, cost_star, new_ring, star_matrice)
-    #     if new_val < best_valeur:
-    #         best_ring = new_ring
-    #         best_valeur = new_val
+    best_valeur = cout_ring(ring, cost_ring)
+
+    for i in range(len(ring)):
+        new_ring = v1_permut(ring, i, len(ring) - 1)
+        new_val = cout_total(cost_ring, cost_star, new_ring, star_matrice)
+        if new_val < best_valeur:
+            best_ring = new_ring
+            best_valeur = new_val
 
     return best_ring, best_star_mat, best_star
 
 
 def extrait_star(centre_star, listestar):
     elem_star = []
-    N = len(listestar)
-    for i in range(N):
+    for i in range(len(listestar)):
         if listestar[i, centre_star] == 1:
             elem_star.append(i)
     return elem_star
@@ -83,11 +68,12 @@ def extrait_star(centre_star, listestar):
 
 def assignement(star, cost_star, ring):
     N = len(cost_star)
-
     star_matrice = np.zeros((N, N))
     for i in star:
-        minval, idx = min(enumerate(cost_star[i]), key=lambda x: x[1])
-        star_matrice[i, ring[idx]] = 1
+        temp = np.array(cost_star[i])  # utilisation de numpy array car plus rapide en calcule
+        temp[i] = 1e10  # je mets l'élément diag très grand pour ne pas le considérer comme le min (np.inf pas utilisable car temp = int array)
+        idx = temp.argmin()
+        star_matrice[i, idx] = 1
 
     return star_matrice
 
@@ -128,31 +114,16 @@ def ini_min_somme(cost_ring, cost_star):
 
 
 def supression(cost_ring, cost_star, ring, star_matrice, star):
-    if len(ring) < 2:
+    print("Suppression dans le ring")
+    if len(ring) == 0:  # si ring vide
         return ring, star_matrice, star
-    num = random.randint(1, len(ring) - 1)
-    best_ring = ring
-    best_star = star
-    best_star_mat = star_matrice
-    best_valeur = float("inf")
-    centre_star = ring[num]
-    elem_star = extrait_star(centre_star, star_matrice)
+    num = random.randint(0, len(ring) - 1)
+    val = ring[num]
+    ring.pop(num)
+    star.append(val)
+    star_matrice = assignement(star, cost_star, ring)
 
-    # supression
-    new_ring = ring
-    del new_ring[num - 1]
-    new_star = star
-    new_star.append(centre_star)
-    newstar_matrice = assignement(new_star, cost_star, new_ring)
-    new_val = cout_total(cost_ring, cost_star, new_ring, newstar_matrice)
-    if new_val < best_valeur:
-        print("suppression")
-        best_ring = new_ring
-        best_star = new_star
-        best_star_mat = newstar_matrice
-        best_valeur = new_val
-
-    return best_ring, best_star_mat, best_star
+    return ring, star_matrice, star
 
 
 def verif(ring, star_matrice, star, M):

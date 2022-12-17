@@ -9,3 +9,5 @@ main.m
 .idea/modules.xml
 .idea/Projet-optimisation-combinatoire.iml
 .idea/vcs.xml
+/cmake-build-debug/
+.idea/
