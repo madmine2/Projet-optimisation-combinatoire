@@ -18,7 +18,7 @@ def recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, len_list_tab
     new_val = float('inf')
     """Génération du voisinage"""
     choice = randint(1, 2)
-    if choice == 1:
+    if choice == 1:  # TODO en plus des mvt entre ring et star, faire des mvt sur le ring (permutation, echanges…)
       for _ in range(randint(1, nbr_voisinage)):
         ring, star_matrice, star = ajout(cost_ring, cost_star, ring, star_matrice, star)
         cout                     = cout_total(cost_ring, cost_star, ring, star_matrice)
