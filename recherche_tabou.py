@@ -1,55 +1,46 @@
-def recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, len_list_tabou):
+from utils import *
+from random import randint
+import time
+
+def recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, len_list_tabou, temps, nbr_voisinage):
   best_ring = ring
-  best_star = star
   best_star_mat = star_matrice
-  best_valeur = cout(cost_ring, cost_star, best_ring, best_star_mat)
-  best_local_valeur = best_valeur
-  list_tabou = [None] * len_list_tabou
-  idx_tab = 1
-  list_tabou[idx_tab - 1] = best_ring
-  idx_tab += 1
-  is_tabou = False
-  is_full = False
+  best_star = star
+  best_valeur = cout_total(cost_ring, cost_star, best_ring, best_star_mat)
+  tabou = []
   t = 0
-  k = 1
-  # NB : pour l'instant je ne fais qu'un seul mvt sur le voisinage
-  while t < 3*60:
-    print(len(star))
-    # choix nouveau voisinage
-    Verif(best_ring, best_star_mat, best_star)
-    if k % 4 == 0 or k % 4 == 1:
-      ring, star_matrice, star = Ajout(cost_ring, cost_star, best_ring, best_star_mat, best_star)
-    elif k % 4 == 2:
-      ring, star_matrice, star = Echange(cost_ring, cost_star, best_ring, best_star_mat, best_star)
-    else:
-      ring, star_matrice, star = Supression(cost_ring, cost_star, best_ring, best_star_mat, best_star)
+  start = time.time()
 
-    # est-ce que ring est dans la list tabou
-    for i in range(len_list_tabou):
-      if list_tabou[idx_tab - 1] == ring:
-        is_tabou = True
+  while temps > t:
+    voisinage = {}  # dict avec key = cout & value = [ring, star_matrice, star]
+    """Génération du voisinage"""
+    for _ in range(nbr_voisinage):
+      choice = randint(1, 2)
+      if choice == 1:
+        ring, star_matrice, star = ajout(cost_ring, cost_star, ring, star_matrice, star)
+        cout = cout_total(cost_ring, cost_star, ring, star_matrice)
+        voisinage[cout] = [ring, star_matrice, star]  # ajout du nouveau voisinage
+      elif choice == 2:
+        ring, star_matrice, star = supression(cost_ring, cost_star, ring, star_matrice, star)
+        cout = cout_total(cost_ring, cost_star, ring, star_matrice)
+        voisinage[cout] = [ring, star_matrice, star]
+    """choix du meilleur voisin"""
+    voisinage_trie = sorted(voisinage.items(), key=lambda x: x[0])
+    new_ring = voisinage_trie[0][1][0]
+    new_star_mat = voisinage_trie[0][1][1]
+    new_star = voisinage_trie[0][1][2]
+    new_val = cout_total(cost_ring, cost_star, new_ring, new_star_mat)
 
-    if not is_tabou:
-      # calcule du cout du nouveau voisinage
-      val = cout(cost_ring, cost_star, ring, star_matrice)
-      if val < best_valeur: # update des variables si ameliorations du cout
-        best_valeur = val
-        best_ring = ring
-        best_star = star
-        best_star_mat = star_matrice
-        list_tabou[idx_tab - 1] = best_ring
-        if idx_tab < len_list_tabou:
-          idx_tab += 1
-        else:
-          idx_tab = 1  # re-initialisation de idx_tab
+    tabou.append([new_ring, new_star_mat, new_star])
+    if len(tabou) < len_list_tabou:
+      tabou.pop(0)
 
-    # re-initialisation de is_tabou
-    is_tabou = False
-
-    # suppression du premier element de list_tabou si elle est pleine
-    if is_full:
-      for i in range(len_list_tabou - 1):
-        list_tabou[i] = list_tabou[i + 1]  # suppression du premier element de list_tabou (en l_ecrasant)
-
-    k += 1
-    print(best_valeur)
+    if new_val < best_valeur:
+      best_ring = new_ring
+      best_star_mat = new_star_mat
+      best_star = new_star
+      best_valeur = new_val
+      print(f"best = {best_valeur}\nlen(ring) = {len(ring)}")
+    end = time.time()
+    t = int(end - start)
+  return best_ring, best_star_mat, best_star

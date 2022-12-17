@@ -8,9 +8,10 @@ def cout_total(cost_ring, cost_star, ring, star_matrice):
     cout_star = 0
 
     # cout du ring
-    for i in range(len(ring) - 1):
-        cout_ring += cost_ring[ring[i]][ring[i + 1]]
-    cout_ring += cost_ring[ring[0]][ring[-1]]
+    if len(ring) > 0:
+        for i in range(len(ring) - 1):
+            cout_ring += cost_ring[ring[i]][ring[i + 1]]
+        cout_ring += cost_ring[ring[0]][ring[-1]]
 
     # cout des stars
     for i in range(len(cost_star)):
@@ -35,7 +36,7 @@ def cout_ring(ring, cost_ring):
 def ajout(cost_ring, cost_star, ring, star_matrice, star):
     if len(ring) == len(cost_ring):  # je ne peux plus rien ajouter dans le ring
         return ring, star_matrice, star
-    print("Ajout dans ring")
+    # print("Ajout dans ring")
     num = random.randint(0, len(star) - 1)
     elem_star = star[num]
     ring.append(elem_star)  # ajout dans le ring
@@ -83,7 +84,7 @@ def v1_permut(ring, num1, num2):
     return ring
 
 
-def echange(cost_ring, cost_star, ring, star_matrice, star):
+def echange(cost_ring, cost_star, ring, star_matrice, star):  # FIXME marche pas
     num = random.randint(0, len(star) - 1)
     elem_star = star[num]
     centre_star = np.where(star_matrice[elem_star, :] == 1)
@@ -114,7 +115,7 @@ def ini_min_somme(cost_ring, cost_star):
 
 
 def supression(cost_ring, cost_star, ring, star_matrice, star):
-    print("Suppression dans le ring")
+    # print("Suppression dans le ring")
     if len(ring) == 0:  # si ring vide
         return ring, star_matrice, star
     num = random.randint(0, len(ring) - 1)
