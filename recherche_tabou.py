@@ -35,7 +35,7 @@ def recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, len_list_tab
 
     """gestion de la liste tabou et update des valeurs"""
     tabou.append([new_ring, new_star_mat, new_star])
-    if len(tabou) < len_list_tabou:
+    if len(tabou) > len_list_tabou:
       tabou.pop(0)
 
     if new_val < best_valeur:
