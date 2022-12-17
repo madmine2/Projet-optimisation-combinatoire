@@ -94,4 +94,4 @@ def grasp1(cost_ring, cost_star, times):
     t = end - start
     bestlist.append(best_value)
     print('best',min(bestlist))
-    #return best_value
+  return best_ring, best_star_mat, best_star

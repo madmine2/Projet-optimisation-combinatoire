@@ -1,5 +1,6 @@
 from utils import *
 from recherche_tabou import recherche_tabou
+from grasp import grasp1
 # Initialisation ----------------
 
 def read_instances(fileName):
@@ -20,14 +21,13 @@ def read_instances(fileName):
 fileName = 'instances/instance1.txt'
 cost_ring, cost_star = read_instances(fileName)
 
-ring, star_matrice, star = ini_min_somme(cost_ring, cost_star)
+ring, star_matrice, star = grasp1(cost_ring, cost_star, 60)
 
-verif(ring, star_matrice, star, len(cost_ring))
+# verif(ring, star_matrice, star, len(cost_ring))
 
-best_ring, best_star_mat, best_star = recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, len_list_tabou=5, nbr_voisinage=1, temps=10)
+best_ring, best_star_mat, best_star = recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, len_list_tabou=10, nbr_voisinage=10, temps=15)
 # initialisation aleatoire
 
-# grasp1(cost_ring, cost_star, 60)
 #
 # # Algorithme --------------------------
 #
