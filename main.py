@@ -68,16 +68,16 @@ def grasp1(cost_ring, cost_star, times):
 
                 for i in possible:
 
-                    if cost_ring[p][i-1] > maximum:
+                    if cost_ring[p-1][i-1] > maximum:
                         maximum = cost_ring[p-1][i-1]
 
-                    if cost_star[p][i-1] > maximum:
+                    if cost_star[p-1][i-1] > maximum:
                         maximum = cost_star[p-1][i-1]
 
-                    if cost_ring[p][i-1] < minimum:
+                    if cost_ring[p-1][i-1] < minimum:
                         minimum = cost_ring[p-1][i-1]
 
-                    if cost_star[p][i-1] < minimum:
+                    if cost_star[p-1][i-1] < minimum:
                         minimum = cost_star[p-1][i-1]
 
                 borne = minimum + (maximum - minimum) * alpha
