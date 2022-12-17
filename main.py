@@ -55,8 +55,8 @@ def grasp1(cost_ring, cost_star, times):
 
     while t < times:
 
-        for alpha in np.arange(0, 0.1s, 0.01):
-            print('alpha=', alpha)
+        for alpha in np.arange(0, 0.1, 0.01):
+
             ring = [1]
             star = []
             possible = [i for i in range(1, N+1)]
