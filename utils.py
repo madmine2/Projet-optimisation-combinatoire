@@ -79,7 +79,7 @@ def assignement(star, cost_star, ring):
     return star_matrice
 
 
-def v1_permut(ring, num1, num2):
+def permut(ring, num1, num2):
     ring[num1], ring[num2] = ring[num2], ring[num1]
     return ring
 
