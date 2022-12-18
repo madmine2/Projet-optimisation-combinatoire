@@ -63,7 +63,7 @@ def grasp1(cost_ring, cost_star, times):
 
     while t < times:
 
-        for alpha in np.arange(0, 0.1, 0.01):
+        for alpha in np.arange(0, 0.41, 0.01):
 
             ring = [1]
             star = []
@@ -91,12 +91,12 @@ def grasp1(cost_ring, cost_star, times):
                 borne = minimum + (maximum - minimum) * alpha
 
                 options = []
-                itt = -1
+                itt_ring = 0
 
                 for i in possible:
                     if cost_ring[p - 1][i - 1] <= borne:
                         options.append(i)
-                        itt += 1
+                        itt_ring += 1
 
                 for i in possible:
                     if cost_star[p - 1][i - 1] <= borne:
@@ -111,7 +111,7 @@ def grasp1(cost_ring, cost_star, times):
                     if i == options[r]:
                         del possible[j]
 
-                if r < itt:
+                if r < itt_ring:
                     ring.append(options[r])
                     p = options[r]
                 else:
@@ -265,4 +265,5 @@ fileName = 'instances/instance1.txt'
 cost_ring, cost_star,N = read_instances(fileName)
 ring, star = grasp1(cost_ring, cost_star,30)
 ring,star=recherche_tabou(cost_ring, cost_star, ring, star,60,N^2)
+print('end')
 
