@@ -49,7 +49,7 @@ function [best_ring,best_star_mat,best_star,best_value] = grasp1(cost_ring, cost
           borne = minimum + (maximum - minimum) * alpha;
 
           options = [];
-          counta = -1;
+          counta = 0;
 
           for i = possible
                 if cost_ring(p, i) <= borne
@@ -89,7 +89,7 @@ function [best_ring,best_star_mat,best_star,best_value] = grasp1(cost_ring, cost
         endwhile
 
          star_mat = assignement (star,cost_star,ring);
-          Verif(ring ,star_mat,star,length(cost_ring))
+         
          cout1 = cout(cost_ring,cost_star,ring,star_mat);
          
          if cout1<best_value  

@@ -5,6 +5,7 @@ addpath("utils")
 addpath("algo voisinage variable")
 addpath("algo tabou")
 addpath("algo grasp")
+addpath("instances")
 #addpath("algo recui")
 # Initialisation ----------------
 
@@ -21,7 +22,8 @@ addpath("algo grasp")
 
   % initialisation aleatoire
 
-  [ring ,star_matrice,star]=Ini_min_somme(cost_ring,cost_star);
+  [ring ,star_matrice,star]=Init_all_ring(cost_ring,cost_star)
+  [ring]=TSP_recuit(ring,cost_ring)
 
 
 # Algorithme --------------------------
@@ -29,10 +31,10 @@ addpath("algo grasp")
   #[ring ,star_matrice,star]=Recuit_variable(cost_ring,cost_star,ring ,star_matrice,star)
   %[ring ,star_matrice,star]=recherche_tabou(cost_ring, cost_star, ring, star_matrice, star, 10);
   #[ring ,star_matrice,star]=fourmis(cost_ring, cost_star, ring, star_matrice, star);
-  [ring,star_mat,star,sol] = grasp1(cost_ring, cost_star, alpha);
+  #[ring,star_mat,star,sol] = grasp1(cost_ring, cost_star, 60);
 # Verification de la solution  --------------------------
 
-  Verif(ring ,star_matrice,star)
+  #Verif(ring ,star_matrice,star)
 
 # Calcul du Cost ----------------
 

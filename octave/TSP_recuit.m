@@ -14,6 +14,7 @@ function [ring]=TSP_recuit(ring,cost_ring)
     ecart_type+=std(cost_ring(ring,i));
   endfor
   ecart_type/length(ring);
+  disp('ecart_type'),disp(ecart_type);
   Ti=-ecart_type/log(pi);
   T=Ti;
   best_ring=ring ;
@@ -54,7 +55,7 @@ function [ring]=TSP_recuit(ring,cost_ring)
        %mise à jour de la nouvelle meilleure valeur 
        if new_valeur<best_valeur
          best_ring=new_ring ;
-         best_valeur=new_valeur;
+         best_valeur=new_valeur
          
        endif
       
