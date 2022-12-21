@@ -317,7 +317,8 @@ nom='output/5iG2_numero'+str(num)+'.txt'
 ring, star = grasp1(cost_ring, cost_star, 5)
 ring, star = recherche_tabou(cost_ring, cost_star, ring, star,5, N ^ 2)
 cout, star_mat = cout_total(cost_ring, cost_star, ring, star)
-print(verif(ring,star_mat, N))
+if not verif(ring,star_mat, N) :
+    print("problème dans la solution")
 ecriture(ring,cout,star_mat,nom)
 
 print(ring)
