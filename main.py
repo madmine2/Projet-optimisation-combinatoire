@@ -68,96 +68,7 @@ def cout_total(cost_ring, cost_star, ring, star):
     star_mat, cout_star = assignement(star, cost_star, ring)
     cout_ring = coutduring(ring, cost_ring)
     return cout_star + cout_ring, star_mat
-def recherche_local(cost_ring, cost_star, ring, star):
-    # attention ne pas toucher au dépot
 
-    best_ring = ring.copy()
-    best_star = star.copy()
-    best_valeur,best_mat = cout_total(cost_ring, cost_star, ring, star)
-    best=True
-    while best==True :
-        best=False
-        for i in range(len(star)):
-            new_ring = ring.copy()
-            new_star = star.copy()
-
-            new_ring.append(new_star[i])
-            del new_star[i]
-            new_val, star_mat = cout_total(cost_ring, cost_star, new_ring, new_star)
-
-            if new_val < best_valeur:
-                best_ring = new_ring.copy()
-                best_star = new_star.copy()
-                best_valeur = new_val
-                best = True
-                if len(best_ring) + len(best_star) < 51:
-                    print("erreur")
-            # recherche de la meilleure place dans le ring
-            for j in range(1, len(new_ring) - 1):  # ne pas déplacer le dépot
-                new2_ring = new_ring.copy()
-                new2_ring = permut(new2_ring, j, len(new_ring) - 1)
-
-                new_val, star_mat = cout_total(cost_ring, cost_star, new2_ring, new_star);
-                if new_val < best_valeur:
-                    best_ring = new2_ring.copy()
-                    best_valeur = new_val
-                    best_star = new_star.copy()
-                    best = True
-                    if len(best_ring) + len(best_star) < 51:
-                        print("erreur")
-
-        # supression
-        for i in range(1, len(ring)):
-            new_ring = ring.copy()
-            new_star = star.copy()
-
-            new_star.append(new_ring[i])
-            del new_ring[i]
-            new_val, star_mat = cout_total(cost_ring, cost_star, new_ring, new_star)
-
-            if new_val < best_valeur and new_ring :
-                best_ring = new_ring.copy()
-                best_star = new_star.copy()
-                best_valeur = new_val
-                best = True
-                if len(best_ring) + len(best_star) < 51:
-                    print("erreur")
-
-        # echange
-        for i in range(1, len(ring)):
-            for j in range(len(star)):
-                new_ring = ring.copy()
-                new_star = star.copy()
-
-                new_ring[i], new_star[j] = new_star[j], new_ring[i]
-
-                new_val, star_mat = cout_total(cost_ring, cost_star, new_ring, new_star)
-
-                if new_val < best_valeur and new_ring :
-                    best_ring = new_ring.copy()
-                    best_star = new_star.copy()
-                    best_valeur = new_val
-                    best = True
-                    if len(best_ring) + len(best_star) < 51:
-                        print("erreur")
-
-        # permutation
-        for i in range(1, len(ring)):
-            for j in range(1, len(ring)):
-                if i != j:
-                    new_ring = ring.copy()
-                    new_ring = permut(new_ring, i, j)
-                    new_val, star_mat = cout_total(cost_ring, cost_star, new_ring, star)
-
-                    if new_val < best_valeur and new_ring :
-                        best_ring = new_ring.copy()
-                        best_star = star
-                        best_valeur = new_val
-                        best = True
-                        if len(best_ring) + len(best_star) < 51:
-                            print("erreur")
-
-    return best_ring, best_star, best_valeur
 
 
 def grasp1(cost_ring, cost_star, times):
@@ -445,6 +356,24 @@ def recherche_tabou(cost_ring, cost_star, ring, star, temps, taille):
 
 
 
+def verif(ring,star_mat,N):
+    if ring[0] != 1:
+        return False
+    if len(ring) + len(star_mat) != N :
+        return False
+    if any(x[1] not in ring for x in star_mat):
+        return False
+    if any(x[0] in ring for x in star_mat):
+        return False
+    if any(ring.count(x)  > 1 for x  in ring):
+        return False
+    temp = []
+    [temp.append(x[0]) for x in star_mat]
+    if any(star_mat.count(x) > 1 for x in star_mat):
+        return False
+    return True
+
+
 #######################################################################################
 
 
@@ -459,6 +388,8 @@ ring, star = grasp1(cost_ring, cost_star,60)
 ring, star = recherche_tabou(cost_ring, cost_star, ring, star,2*60, N ^ 2)
 
 cout, star_mat = cout_total(cost_ring, cost_star, ring, star)
+if not verif(ring,star_mat, N) :
+    print("problème dans la solution")
 ecriture(ring,cout,star_mat,nom)
 
 #print(ring)
