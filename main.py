@@ -81,6 +81,7 @@ def grasp1(cost_ring, cost_star, times):
     best_alpha = 0
     alphabest = []
     t = 0
+    liste_solution=[]
 
 
 
@@ -143,28 +144,29 @@ def grasp1(cost_ring, cost_star, times):
 
             star_mat, cout_star = assignement(star, cost_star, ring)
             cout_ring = coutduring(ring, cost_ring)
+            cout=cout_ring+cout_star
+            if [ring,star,cout] not in liste_solution:
+                liste_solution.append([ring,star,cout])
+
 
 
             if cout_ring+cout_star < best_value:
 
-
-                best_alpha = alpha
                 best_ring = ring
                 best_star = star
 
                 best_value = cout_star + cout_ring
+                print("best_value_grasp",best_value)
 
         end = time.perf_counter()
         t = end - start
-        alphabest.append(best_alpha)
-
-        bestlist.append(best_value)
-
-        print('best', min(bestlist))
 
 
 
-    return best_ring,best_star
+
+
+    best_solution=sorted(liste_solution, key=lambda elem: elem[2])
+    return best_solution
 
 
 def permut(ring, num1, num2):
@@ -326,7 +328,7 @@ def TSP_recuit(ring, cost_ring, temps):
     return best_ring
 
 
-def recherche_tabou(cost_ring, cost_star, ring, star, temps, taille):
+def recherche_tabou(cost_ring, cost_star, ring, star, temps, taille,maxitt):
     best_ring = ring
     best_star = star
     best_valeur, best_star_mat = cout_total(cost_ring, cost_star, best_ring, star)
@@ -334,15 +336,22 @@ def recherche_tabou(cost_ring, cost_star, ring, star, temps, taille):
     t = 0
     start = time.perf_counter()
     tabou.append(best_ring)
+    fige=0
     while t < temps:
+
+        if fige> maxitt :
+            break;
 
         ring, star, cout = meilleur_mouvement_tabou(cost_ring, cost_star, ring, star, tabou)
 
         if cout < best_valeur:
-            print('best value', best_valeur)
+
             best_ring = ring
             best_star = star
             best_valeur = cout
+            print('best value tabou', best_valeur)
+        else:
+            fige+=1
 
         tabou.append(ring)
         if len(tabou) > taille:
@@ -377,20 +386,43 @@ def verif(ring,star_mat,N):
 #######################################################################################
 
 
-fileName = 'instances/instance8.txt'
+fileName = 'instances/instance9.txt'
 cost_ring, cost_star, N = read_instances(fileName)
 num=1
 nom='output/5iG2_Challenge'+str(num)+'.txt'
+time_grasp=60
+time_tabou=2*60
+
+
+liste_solution = grasp1(cost_ring, cost_star,time_grasp)
+best_ring = liste_solution[0][0]
+best_star = liste_solution[0][1]
+best_valeur = liste_solution[0][2]
+itt=0
+t=0
+start = time.perf_counter()
+while t<time_tabou and itt<len(liste_solution) :
+    temps_restant=time_tabou-t
+
+    ring, star = recherche_tabou(cost_ring, cost_star,liste_solution[itt][0],liste_solution[itt][1],temps_restant,N**2, N)
+
+    cout, star_mat = cout_total(cost_ring, cost_star,ring,star)
+    if cout<best_valeur:
+        best_ring=ring
+        best_star=star
+        best_valeur=cout
+
+    itt+=1
+    end = time.perf_counter()
+    t = end - start
 
 
 
-ring, star = grasp1(cost_ring, cost_star,60)
-ring, star = recherche_tabou(cost_ring, cost_star, ring, star,2*60, N ^ 2)
-
-cout, star_mat = cout_total(cost_ring, cost_star, ring, star)
-if not verif(ring,star_mat, N) :
+score, star_mat = cout_total(cost_ring, cost_star,best_ring,best_star)
+if not verif(best_ring,star_mat, N) :
     print("problème dans la solution")
-ecriture(ring,cout,star_mat,nom)
+
+ecriture(best_ring,score,star_mat,nom)
 
 #print(ring)
 #print(star)
