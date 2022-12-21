@@ -19,6 +19,24 @@ def read_instances(fileName):
             cost_star.append([int(a) for a in fin.readline().rstrip().split(" ")])
     return cost_ring, cost_star, N
 
+def ecriture(ring,cout,star_mat,nom):
+    with open(nom, 'w') as fichier:
+        fichier.write("RING"+" "+str(len(ring))+"\n")
+        for i in ring:
+            fichier.write(str(i))
+            if i!=ring[-1]:
+                fichier.write(" ")
+            else:
+                fichier.write("\n")
+
+        fichier.write("STAR\n")
+        for i in star_mat:
+            fichier.write(str(i[0])+" "+str(i[1])+"\n")
+        fichier.write("COST"+" "+str(cout))
+
+
+
+
 
 def assignement(star, cost_star, ring):
     star_matrice = []
@@ -332,7 +350,7 @@ def TSP_recuit(ring, cost_ring, temps):
     start = time.perf_counter()
     # paramètre du recuit simulé
     pi = 0.9
-    pallier =N**10
+    pallier =N**4
     facteurT = 0.9
 
     # recherche de la température
@@ -424,11 +442,17 @@ def recherche_tabou(cost_ring, cost_star, ring, star, temps, taille):
 #######################################################################################
 
 
-fileName = 'instances/instance7.txt'
+fileName = 'instances/instance2.txt'
 cost_ring, cost_star, N = read_instances(fileName)
+num=1
+nom='output/5iG2_numero'+str(num)+'.txt'
 
 
+ring, star = grasp1(cost_ring, cost_star, 5)
+ring, star = recherche_tabou(cost_ring, cost_star, ring, star,5, N ^ 2)
+cout, star_mat = cout_total(cost_ring, cost_star, ring, star)
+ecriture(ring,cout,star_mat,nom)
 
-ring, star = grasp1(cost_ring, cost_star, 60)
-ring, star = recherche_tabou(cost_ring, cost_star, ring, star,2*60, N ^ 2)
-print('end')
+print(ring)
+print(star)
+print(len(ring)/N)
