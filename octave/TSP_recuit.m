@@ -7,16 +7,16 @@ function [ring]=TSP_recuit(ring,cost_ring)
   % paramètre du recuit simulé 
   pi=0.8;
   pallier= N^(1.5);
-  facteurT=0.9
+  facteurT=0.95
   % recherche de la température
   ecart_type=0;
   for i=ring
     ecart_type+=std(cost_ring(ring,i));
   endfor
-  ecart_type/length(ring);
+ 
   disp('ecart_type'),disp(ecart_type);
   Ti=-ecart_type/log(pi);
-  T=Ti;
+  T=Ti
   best_ring=ring ;
   valeur=cout_ring(ring,cost_ring);
   best_valeur=valeur;
@@ -27,9 +27,9 @@ function [ring]=TSP_recuit(ring,cost_ring)
     fige=true;
     while t<3*60 && itt<=pallier
        % mouvement aléatoire
-      i=randi(length(ring));
+      i=randi([2,length(ring)]);
       do
-        j=randi(length(ring));
+        j=randi([2,length(ring)]);
       until j!=i
        [new_ring ]=V1_permut(ring,i,j);
        

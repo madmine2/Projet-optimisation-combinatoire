@@ -171,6 +171,8 @@ def grasp1(cost_ring, cost_star, times):
     alphabest = []
     t = 0
 
+
+
     while t < times:
 
         for alpha in np.arange(0, 0.40, 0.01):
@@ -228,12 +230,13 @@ def grasp1(cost_ring, cost_star, times):
                     star.append(options[r])
 
 
-
             star_mat, cout_star = assignement(star, cost_star, ring)
             cout_ring = coutduring(ring, cost_ring)
 
 
             if cout_ring+cout_star < best_value:
+
+
                 best_alpha = alpha
                 best_ring = ring
                 best_star = star
@@ -250,7 +253,7 @@ def grasp1(cost_ring, cost_star, times):
 
 
 
-    return best_ring, best_star
+    return best_ring,best_star
 
 
 def permut(ring, num1, num2):
@@ -349,8 +352,8 @@ def TSP_recuit(ring, cost_ring, temps):
     t = 0
     start = time.perf_counter()
     # paramètre du recuit simulé
-    pi = 0.9
-    pallier =N**4
+    pi = 0.95
+    pallier =N**2
     facteurT = 0.9
 
     # recherche de la température
@@ -375,7 +378,8 @@ def TSP_recuit(ring, cost_ring, temps):
                 j = randrange(1,len(ring))
                 if j != i:
                     break
-            new_ring = permut(ring.copy(), i, j)
+            new_ring=ring.copy()
+            new_ring = permut(new_ring, i, j)
 
             # Evaluation si changement
             new_valeur = coutduring(new_ring, cost_ring)
@@ -439,20 +443,24 @@ def recherche_tabou(cost_ring, cost_star, ring, star, temps, taille):
     return best_ring, best_star
 
 
+
+
 #######################################################################################
 
 
-fileName = 'instances/instance2.txt'
+fileName = 'instances/instance8.txt'
 cost_ring, cost_star, N = read_instances(fileName)
 num=1
-nom='output/5iG2_numero'+str(num)+'.txt'
+nom='output/5iG2_Challenge'+str(num)+'.txt'
 
 
-ring, star = grasp1(cost_ring, cost_star, 5)
-ring, star = recherche_tabou(cost_ring, cost_star, ring, star,5, N ^ 2)
+
+ring, star = grasp1(cost_ring, cost_star,60)
+ring, star = recherche_tabou(cost_ring, cost_star, ring, star,2*60, N ^ 2)
+
 cout, star_mat = cout_total(cost_ring, cost_star, ring, star)
 ecriture(ring,cout,star_mat,nom)
 
-print(ring)
-print(star)
+#print(ring)
+#print(star)
 print(len(ring)/N)
