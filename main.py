@@ -78,8 +78,8 @@ def grasp1(cost_ring, cost_star, times,timealpha):
     best_star = []
     best_value = float("inf")
     bestlist = []
-    best_alpha = 0
-    alphabest = []
+
+    alphabest = 0
     t = 0
     liste_solution=[]
 
@@ -395,7 +395,7 @@ def verif(ring,star_mat,N):
 fileName = 'instances/instance7.txt'
 cost_ring, cost_star, N = read_instances(fileName)
 num=1
-nom='output/5iG2_Challenge'+str(num)+'.txt'
+nom='output/Challenge-G2_'+str(num)+'.txt'
 time_grasp=90
 time_alpha=30
 time_tabou=3*60
