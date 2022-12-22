@@ -71,7 +71,7 @@ def cout_total(cost_ring, cost_star, ring, star):
 
 
 
-def grasp1(cost_ring, cost_star, times):
+def grasp1(cost_ring, cost_star, times,timealpha):
     start = time.perf_counter()
     N = len(cost_ring)
     best_ring = []
@@ -87,8 +87,82 @@ def grasp1(cost_ring, cost_star, times):
 
     while t < times:
 
-        for alpha in np.arange(0, 0.40, 0.01):
+        if t < timealpha :
 
+            for alpha in np.arange(0, 0.40, 0.01):
+
+                ring = [1]
+                star = []
+                possible = [i for i in range(2, N + 1)]
+                p = 1
+
+                while len(ring) + len(star) < N:
+                    maximum = 0
+                    minimum = float("inf")
+
+                    for i in possible:
+
+                        if cost_ring[p - 1][i - 1] > maximum:
+                            maximum = cost_ring[p - 1][i - 1]
+
+                        if cost_star[p - 1][i - 1] > maximum:
+                            maximum = cost_star[p - 1][i - 1]
+
+                        if cost_ring[p - 1][i - 1] < minimum:
+                            minimum = cost_ring[p - 1][i - 1]
+
+                        if cost_star[p - 1][i - 1] < minimum:
+                            minimum = cost_star[p - 1][i - 1]
+
+                    borne = minimum + (maximum - minimum) * alpha
+
+                    options = []
+                    itt_ring = 0
+
+                    for i in possible:
+                        if cost_ring[p - 1][i - 1] <= borne:
+                            options.append(i)
+                            itt_ring += 1
+
+                    for i in possible:
+                        if cost_star[p - 1][i - 1] <= borne:
+                            options.append(i)
+
+                    if len(options) > 1:
+                        r = randrange(len(options))
+                    else:
+                        r = 0
+
+                    for j, i in enumerate(possible):
+                        if i == options[r]:
+                            del possible[j]
+
+                    if r < itt_ring:
+                        ring.append(options[r])
+                        p = options[r]
+                    else:
+                        star.append(options[r])
+
+
+                star_mat, cout_star = assignement(star, cost_star, ring)
+                cout_ring = coutduring(ring, cost_ring)
+                cout=cout_ring+cout_star
+                if [ring,star,cout] not in liste_solution:
+                    liste_solution.append([ring,star,cout])
+
+
+
+                if cout_ring+cout_star < best_value:
+
+                    best_ring = ring
+                    best_star = star
+                    alphabest= alpha
+
+                    best_value = cout_star + cout_ring
+                    print("best_value_grasp",best_value)
+
+        else :
+            alpha=alphabest
             ring = [1]
             star = []
             possible = [i for i in range(2, N + 1)]
@@ -141,22 +215,20 @@ def grasp1(cost_ring, cost_star, times):
                 else:
                     star.append(options[r])
 
-
             star_mat, cout_star = assignement(star, cost_star, ring)
             cout_ring = coutduring(ring, cost_ring)
-            cout=cout_ring+cout_star
-            if [ring,star,cout] not in liste_solution:
-                liste_solution.append([ring,star,cout])
+            cout = cout_ring + cout_star
+            if [ring, star, cout] not in liste_solution:
+                liste_solution.append([ring, star, cout])
 
-
-
-            if cout_ring+cout_star < best_value:
-
+            if cout_ring + cout_star < best_value:
                 best_ring = ring
                 best_star = star
+                alphabest = alpha
 
                 best_value = cout_star + cout_ring
-                print("best_value_grasp",best_value)
+                print("best_value_grasp", best_value)
+
 
         end = time.perf_counter()
         t = end - start
@@ -386,15 +458,16 @@ def verif(ring,star_mat,N):
 #######################################################################################
 
 
-fileName = 'instances/instance9.txt'
+fileName = 'instances/instance7.txt'
 cost_ring, cost_star, N = read_instances(fileName)
 num=1
 nom='output/5iG2_Challenge'+str(num)+'.txt'
-time_grasp=60
-time_tabou=2*60
+time_grasp=90
+time_alpha=30
+time_tabou=3*60
 
 
-liste_solution = grasp1(cost_ring, cost_star,time_grasp)
+liste_solution = grasp1(cost_ring, cost_star,time_grasp,time_alpha)
 best_ring = liste_solution[0][0]
 best_star = liste_solution[0][1]
 best_valeur = liste_solution[0][2]
@@ -404,7 +477,7 @@ start = time.perf_counter()
 while t<time_tabou and itt<len(liste_solution) :
     temps_restant=time_tabou-t
 
-    ring, star = recherche_tabou(cost_ring, cost_star,liste_solution[itt][0],liste_solution[itt][1],temps_restant,N**2, N)
+    ring, star = recherche_tabou(cost_ring, cost_star,liste_solution[itt][0],liste_solution[itt][1],temps_restant,N**2,int( N**(1)))
 
     cout, star_mat = cout_total(cost_ring, cost_star,ring,star)
     if cout<best_valeur:
@@ -424,6 +497,4 @@ if not verif(best_ring,star_mat, N) :
 
 ecriture(best_ring,score,star_mat,nom)
 
-#print(ring)
-#print(star)
-print(len(ring)/N)
+print(len(best_ring)/N)
